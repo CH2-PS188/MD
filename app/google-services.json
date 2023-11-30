@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "215966428188",
+    "project_id": "moneo-d36fb",
+    "storage_bucket": "moneo-d36fb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:215966428188:android:4e82e123820b97343c43d9",
+        "android_client_info": {
+          "package_name": "com.moneo.moneo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpIOBK6qQtwu_Ifg6W5ZbG_po-lfID9AQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
