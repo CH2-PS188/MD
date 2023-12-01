@@ -1,3 +1,25 @@
 <resources>
     <string name="app_name">Moneo</string>
+
+    <string name="onBoarding">Selamat Datang di Moneo</string>
+    <string name="onBoarding_desc">Teman cerdasmu dalam mengelola keuangan pribadi untuk meraih kendali atas keuanganmu dan bergerak menuju kebebasan finansial.</string>
+
+    <string name="login">Masuk</string>
+    <string name="regis">Daftar</string>
+
+    <string name="username">Username</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+
+    <string name="welcome_back">Selamat Datang Kembali</string>
+    <string name="have_account">Sudah punya akun</string>
+    <string name="create_new_account">Buat akun baru</string>
+
+    <string name="txt_create_new_account">Buat akun "\n"baru</string>
+    <string name="invalid_email">Format email is invalid!</string>
+    <string name="min_length_char">Minimal Length %1$d characters</string>
+
+
+
+
 </resources>
