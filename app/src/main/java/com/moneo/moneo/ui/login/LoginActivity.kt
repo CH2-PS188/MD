@@ -28,7 +28,6 @@ class LoginActivity : AppCompatActivity() {
         authStateListener = FirebaseAuth.AuthStateListener { auth ->
             val user = auth.currentUser
             if (user != null) {
-                // Pengguna tidak masuk, arahkan ke layar login atau lakukan tindakan lain yang sesuai
                 redirectToLoginScreen()
             }
         }
