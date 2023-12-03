@@ -13,13 +13,14 @@
         android:theme="@style/Theme.Moneo"
         tools:targetApi="34">
         <activity
-            android:theme="@style/Theme.Auth"
+            android:name=".ui.MainActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.registrasi.RegistrasiActivity"
             android:exported="false" />
         <activity
-            android:theme="@style/Theme.Auth"
             android:name=".ui.login.LoginActivity"
-            android:exported="false" />
+            android:exported="false"/>
         <activity
             android:name=".ui.onboarding.OnboardingActivity"
             android:exported="true">

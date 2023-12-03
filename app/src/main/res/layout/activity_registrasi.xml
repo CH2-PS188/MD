@@ -6,6 +6,24 @@
     android:layout_height="match_parent"
     tools:context=".ui.registrasi.RegistrasiActivity">
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:elevation="0dp">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?attr/actionBarSize"
+            app:navigationIcon="@drawable/ic_baseline_arrow_back_24" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
     <TextView
         android:id="@+id/titleTextView"
         android:layout_width="0dp"
@@ -13,7 +31,6 @@
         android:layout_marginBottom="20dp"
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
-        android:alpha="0"
         android:lineHeight="60dp"
         android:text="@string/txt_create_new_account"
         android:textColor="@color/color_textPrimary"
@@ -22,8 +39,7 @@
         app:layout_constraintBottom_toTopOf="@+id/guidelineHorizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:alpha="100" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/nameEditTextLayout"
@@ -33,12 +49,10 @@
         android:layout_marginTop="20dp"
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
-        android:alpha="0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/guidelineHorizontal"
-        app:startIconDrawable="@drawable/ic_baseline_person_24"
-        tools:alpha="100">
+        app:startIconDrawable="@drawable/ic_baseline_person_24">
 
         <com.moneo.moneo.customView.CustomUsername
             android:id="@+id/ed_register_name"
@@ -55,18 +69,16 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="15dp"
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
-        android:alpha="0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nameEditTextLayout"
-        app:startIconDrawable="@drawable/ic_baseline_email_24"
-        tools:alpha="100">
+        app:startIconDrawable="@drawable/ic_baseline_email_24">
 
         <com.moneo.moneo.customView.CustomEmail
-            android:id="@+id/ed_login_email"
+            android:id="@+id/ed_register_email"
             android:hint="@string/email"
             android:minHeight="50dp"
             android:layout_width="match_parent"
@@ -81,15 +93,13 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="15dp"
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
-        android:alpha="0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emailEditTextLayout"
-        app:startIconDrawable="@drawable/ic_baseline_lock_24"
-        tools:alpha="100">
+        app:startIconDrawable="@drawable/ic_baseline_lock_24">
 
         <com.moneo.moneo.customView.CustomPassword
             android:id="@+id/ed_register_password"
@@ -103,27 +113,24 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/loginButton"
+        android:id="@+id/registrasiButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="15dp"
         android:layout_marginStart="15dp"
-        android:alpha="0"
         android:backgroundTint="@color/color_primary"
         android:text="@string/regis"
         app:cornerRadius="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordEditTextLayout"
-        tools:alpha="100" />
+        app:layout_constraintTop_toBottomOf="@+id/passwordEditTextLayout" />
 
     <TextView
         android:id="@+id/textButtonHaveAccount"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
-        android:alpha="0"
         android:text="@string/have_account"
         android:textColor="@color/color_primary"
         android:textStyle="bold"
@@ -131,9 +138,8 @@
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginButton"
-        app:layout_constraintHorizontal_bias="0.0"
-        tools:alpha="100" />
+        app:layout_constraintTop_toBottomOf="@+id/registrasiButton"
+        app:layout_constraintHorizontal_bias="0.0" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineHorizontal"
@@ -141,7 +147,7 @@
         android:layout_height="64dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintGuide_begin="248dp"
+        app:layout_constraintGuide_percent="0.30199727"
         app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline

@@ -27,7 +27,6 @@
         android:layout_marginStart="15dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="15dp"
-        android:alpha="0"
         android:text="@string/onBoarding"
         android:textColor="@color/color_textPrimary"
         android:textSize="24sp"
@@ -36,8 +35,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guidelineHorizontal"
-        tools:alpha="100" />
+        app:layout_constraintTop_toTopOf="@+id/guidelineHorizontal" />
 
     <TextView
         android:id="@+id/descTextView"
@@ -46,7 +44,6 @@
         android:layout_marginStart="15dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="15dp"
-        android:alpha="0"
         android:lineHeight="24dp"
         android:textAlignment="center"
         android:text="@string/onBoarding_desc"
@@ -55,8 +52,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleTextView"
-        tools:alpha="100" />
+        app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
 
     <Button
         android:id="@+id/loginButton"
@@ -65,14 +61,12 @@
         android:layout_marginStart="15dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="15dp"
-        android:alpha="0"
         app:cornerRadius="8dp"
         android:backgroundTint="@color/color_primary"
         android:text="@string/login"
         app:layout_constraintEnd_toStartOf="@+id/guidelineVertical"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/descTextView"
-        tools:alpha="100" />
+        app:layout_constraintTop_toBottomOf="@+id/descTextView" />
 
     <Button
         android:id="@+id/regisButton"
@@ -82,7 +76,6 @@
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
         android:layout_marginTop="32dp"
-        android:alpha="0"
         android:textColor="@color/color_primary"
         android:backgroundTint="@android:color/transparent"
         android:text="@string/regis"
@@ -92,8 +85,7 @@
         app:cornerRadius="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guidelineVertical"
-        app:layout_constraintTop_toBottomOf="@+id/descTextView"
-        tools:alpha="100" />
+        app:layout_constraintTop_toBottomOf="@+id/descTextView" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineHorizontal"
