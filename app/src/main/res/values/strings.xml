@@ -25,4 +25,10 @@
     <string name="logout">Logout</string>
 
 
+    <string name="navigation_transaksi">Transaksi</string>
+    <string name="navigation_rekening">Rekening</string>
+    <string name="navigation_tabungan">Tabungan</string>
+    <string name="navigation_rekap">Rekap</string>
+
+
 </resources>

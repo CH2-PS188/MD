@@ -1,6 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:app="http://schemas.android.com/apk/res-auto"
-             android:id="@+id/mobile_navigation">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigationTransaksi">
+
+    <fragment
+        android:id="@+id/navigationTransaksi"
+        android:name="com.moneo.moneo.ui.transaksi.TransaksiFragment"
+        android:label="@string/navigation_transaksi"
+        tools:layout="@layout/fragment_transaksi" />
+
+    <fragment
+        android:id="@+id/navigationRekening"
+        android:name="com.moneo.moneo.ui.rekening.RekeningFragment"
+        android:label="@string/navigation_rekening"
+        tools:layout="@layout/fragment_rekening" />
+
+    <fragment
+        android:id="@+id/navigationTabungan"
+        android:name="com.moneo.moneo.ui.tabungan.TabunganFragment"
+        android:label="@string/navigation_tabungan"
+        tools:layout="@layout/fragment_tabungan" />
+
+    <fragment
+        android:id="@+id/navigationRekap"
+        android:name="com.moneo.moneo.ui.rekap.RekapFragment"
+        android:label="@string/navigation_rekap"
+        tools:layout="@layout/fragment_rekap" />
 
 </navigation>
