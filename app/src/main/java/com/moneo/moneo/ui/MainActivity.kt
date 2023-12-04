@@ -91,6 +91,10 @@ class MainActivity : AppCompatActivity() {
             else -> true
         }
     }
+<<<<<<< HEAD
 
 
 }
+=======
+}
+>>>>>>> 9a790b27fc912bfbe5c00b547c7ece6d1777b59c
