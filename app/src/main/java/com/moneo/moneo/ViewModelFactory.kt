@@ -6,12 +6,16 @@ import androidx.lifecycle.ViewModelProvider
 import com.moneo.moneo.data.repository.TransactionRepository
 import com.moneo.moneo.di.Injection
 import com.moneo.moneo.ui.transaction.AddTransactionViewModel
+import com.moneo.moneo.ui.transaction.TransactionViewModel
 
 class ViewModelFactory private constructor(private val transactionRepository: TransactionRepository) : ViewModelProvider.NewInstanceFactory() {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(AddTransactionViewModel::class.java)) {
             return AddTransactionViewModel(transactionRepository) as T
+        }
+        if (modelClass.isAssignableFrom(TransactionViewModel::class.java)) {
+            return TransactionViewModel(transactionRepository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }

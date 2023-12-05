@@ -9,7 +9,7 @@ import androidx.room.Query
 @Dao
 interface TransactionDao {
 
-    @Query("SELECT * FROM `transaction` ORDER BY id ASC")
+    @Query("SELECT * FROM `transaction` ORDER BY date DESC")
     fun getAllTransaction(): LiveData<List<Transaction>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
