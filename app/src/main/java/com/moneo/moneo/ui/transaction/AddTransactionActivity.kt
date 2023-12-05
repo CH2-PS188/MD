@@ -54,7 +54,7 @@ class AddTransactionActivity : AppCompatActivity() {
                     transaction?.description = description
                 }
                 viewModel.insertTransaction(transaction as Transaction)
-                Toast.makeText(this@AddTransactionActivity, "Transaksi berhasil ditambahkan", Toast.LENGTH_SHORT).show()
+
                 intent = Intent(this@AddTransactionActivity, MainActivity::class.java)
                 startActivity(intent)
             }
