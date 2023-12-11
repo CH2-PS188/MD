@@ -2,12 +2,11 @@ package com.moneo.moneo.ui.transaction
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.moneo.moneo.MainActivity
 import com.moneo.moneo.ViewModelFactory
-import com.moneo.moneo.data.local.Transaction
+import com.moneo.moneo.data.local.transaction.Transaction
 import com.moneo.moneo.databinding.ActivityAddTransactionBinding
 
 class AddTransactionActivity : AppCompatActivity() {

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.moneo.moneo.databinding.ActivityMainBinding
+import com.moneo.moneo.ui.rekening.AccountFragment
 import com.moneo.moneo.ui.transaction.TransactionFragment
 
 class MainActivity : AppCompatActivity() {
@@ -17,6 +18,7 @@ class MainActivity : AppCompatActivity() {
 
         val fragmentManager = supportFragmentManager
         val transactionFragment = TransactionFragment()
+        val accountFragment = AccountFragment()
         val fragment = fragmentManager.findFragmentByTag(TransactionFragment::class.java.simpleName)
 
         if (fragment !is TransactionFragment) {

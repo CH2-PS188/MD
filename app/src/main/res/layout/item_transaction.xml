@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginBottom="10dp">
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="10dp"
+        app:strokeWidth="0dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:padding="10dp">
             
             <TextView
                 android:id="@+id/tv_item_title"
@@ -26,7 +31,7 @@
             <TextView
                 android:id="@+id/tv_item_total"
                 android:layout_width="125dp"
-                android:layout_height="40dp"
+                android:layout_height="60dp"
                 android:gravity="end|center"
                 android:layout_alignParentEnd="true"
                 android:text="Rp 100.000.000"
@@ -43,7 +48,19 @@
                 android:text="Kategori"
                 android:textSize="13sp" />
 
+            <TextView
+                android:id="@+id/tv_item_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:textColor="@color/grey"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@id/tv_item_total"
+                android:layout_below="@id/tv_item_category"
+                android:text="Keterangan"
+                android:textSize="12sp" />
+
             
         </RelativeLayout>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 </LinearLayout>

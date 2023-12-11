@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.moneo.moneo.data.local.Transaction
+import com.moneo.moneo.data.local.transaction.Transaction
 import com.moneo.moneo.databinding.ItemTransactionBinding
 
 
@@ -27,7 +27,8 @@ class TransactionAdapter : ListAdapter<Transaction, TransactionAdapter.ViewHolde
             binding.apply {
                 tvItemTitle.text = transaction.title
                 tvItemCategory.text = transaction.category
-                tvItemTotal.text = transaction.total.toString()
+                tvItemTotal.text = "Rp ${transaction.total}"
+                tvItemDescription.text = transaction.description
             }
         }
     }

@@ -1,4 +1,4 @@
-package com.moneo.moneo.data.local
+package com.moneo.moneo.data.local.transaction
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao

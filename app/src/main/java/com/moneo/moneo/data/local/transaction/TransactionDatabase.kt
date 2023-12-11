@@ -1,4 +1,4 @@
-package com.moneo.moneo.data.local
+package com.moneo.moneo.data.local.transaction
 
 import android.content.Context
 import androidx.room.Database
@@ -20,6 +20,7 @@ abstract class TransactionDatabase : RoomDatabase() {
                 synchronized(TransactionDatabase::class.java) {
                     INSTANCE = Room.databaseBuilder(context.applicationContext,
                         TransactionDatabase::class.java, "note_database")
+                        .fallbackToDestructiveMigration()
                         .build()
                 }
             }
