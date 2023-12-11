@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Moneo</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="navigation_transaction">Transaksi</string>
+    <string name="navigation_account">Rekening</string>
+    <string name="navigation_report">Rekap</string>
 </resources>

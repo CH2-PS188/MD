@@ -124,14 +124,11 @@
         android:id="@+id/btn_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="25dp"
-        android:layout_marginEnd="15dp"
+        android:layout_margin="25dp"
         android:src="@drawable/ic_add"
         android:tint="@color/white"
         android:contentDescription="Floating Action Button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

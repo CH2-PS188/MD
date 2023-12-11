@@ -12,16 +12,6 @@ import com.moneo.moneo.databinding.ItemTransactionBinding
 
 class TransactionAdapter : ListAdapter<Transaction, TransactionAdapter.ViewHolder>(DIFF_CALLBACK){
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ItemTransactionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(binding)
-    }
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val transaction = getItem(position)
-        holder.bind(transaction)
-    }
-
     class ViewHolder(val binding: ItemTransactionBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(transaction: Transaction) {
             binding.apply {
@@ -31,6 +21,16 @@ class TransactionAdapter : ListAdapter<Transaction, TransactionAdapter.ViewHolde
                 tvItemDescription.text = transaction.description
             }
         }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val binding = ItemTransactionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(binding)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val transaction = getItem(position)
+        holder.bind(transaction)
     }
 
     companion object {
