@@ -24,11 +24,36 @@
     <string name="signup_error">Cannot Signup, please check again!</string>
     <string name="logout">Logout</string>
 
+    <string name="transaksi">Transaksi</string>
+    <string name="rekening">Rekening</string>
+    <string name="tabungan">Tabungan</string>
+    <string name="rekap">Rekap</string>
+    <string name="detail_rekap">Detail Rekap</string>
+    <string name="no_data">Tidak ada Data</string>
+
+
+    <string name="tanggal">01 Nov 2023 – 30 Nov 2023</string>
+    <string name="pengeluaran">Pengeluaran</string>
+    <string name="pemasukan">Pemasukan</string>
+    <string name="selisih">Selisih</string>
+    <string name="rata_rata">rata-rata perhari</string>
+
+
+    <string name="angka_pengeluaran">2.000.000</string>
+    <string name="angka_pemasukan">6.000.000</string>
+    <string name="angka_selisih">4.000.000</string>
+    <string name="angka_rata">192.548</string>
+
+    <string name="belanja">Belanja Bulanan</string>
+    <string name="gaji_bulanan">Gaji Bulanan</string>
 
     <string name="navigation_transaksi">Transaksi</string>
     <string name="navigation_rekening">Rekening</string>
     <string name="navigation_tabungan">Tabungan</string>
     <string name="navigation_rekap">Rekap</string>
+    <string name="tambah_transaksi">Tambah Transaksi</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

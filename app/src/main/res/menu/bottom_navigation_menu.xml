@@ -23,7 +23,7 @@
     <item
         android:id="@+id/navigationRekap"
         android:icon="@drawable/ic_baseline_bar_chart_24"
-        android:title="@string/navigation_tabungan"
+        android:title="@string/navigation_rekap"
         android:enabled="true"
         app:itemIconTint="@color/color_textSecondary"/>
 </menu>
