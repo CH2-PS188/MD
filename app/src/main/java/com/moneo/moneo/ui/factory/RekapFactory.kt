@@ -5,12 +5,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.moneo.moneo.data.repository.RekapRepository
 import com.moneo.moneo.di.RekapInjection
-import com.moneo.moneo.ui.MainViewModel
+import com.moneo.moneo.ui.rekap.RekapViewModel
 
 class RekapFactory private constructor(private val rekapRepository: RekapRepository): ViewModelProvider.NewInstanceFactory() {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return MainViewModel(rekapRepository) as T
+        return RekapViewModel(rekapRepository) as T
     }
 
     companion object{

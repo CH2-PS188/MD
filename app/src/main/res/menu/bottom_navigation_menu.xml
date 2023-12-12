@@ -2,28 +2,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/navigationTransaksi"
-        android:icon="@drawable/ic_baseline_menu_book_24"
-        android:title="@string/navigation_transaksi"
-        android:enabled="true"
-        app:itemIconTint="@color/color_textSecondary"/>
-    <item
-        android:id="@+id/navigationRekening"
-        android:icon="@drawable/ic_baseline_credit_card_24"
-        android:title="@string/navigation_rekening"
-        android:enabled="true"
-        app:itemIconTint="@color/color_textSecondary"/>
-    <item
-        android:id="@+id/navigationTabungan"
-        android:icon="@drawable/ic_baseline_event_note_24"
-        android:title="@string/navigation_tabungan"
-        android:enabled="true"
-        app:itemIconTint="@color/color_textSecondary"/>
-
-    <item
         android:id="@+id/navigationRekap"
         android:icon="@drawable/ic_baseline_bar_chart_24"
         android:title="@string/navigation_rekap"
         android:enabled="true"
         app:itemIconTint="@color/color_textSecondary"/>
+    <item
+        android:id="@+id/navigationSetting"
+        android:icon="@drawable/ic_baseline_settings_24"
+        android:title="@string/navigation_setting"
+        android:enabled="true"
+        app:itemIconTint="@color/color_textSecondary"/>
+
 </menu>

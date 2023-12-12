@@ -6,6 +6,11 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.moneo.moneo.R
 import com.moneo.moneo.databinding.ActivityMainBinding
@@ -32,6 +37,26 @@ class MainActivity : AppCompatActivity() {
                 redirectToLoginScreen()
             }
         }
+
+        supportActionBar?.hide()
+
+        val navView: BottomNavigationView = findViewById(R.id.bottom_navigation)
+
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as? NavHostFragment
+        if (navHostFragment != null) {
+            val navController = navHostFragment.navController
+            val appBarConfiguration = AppBarConfiguration.Builder(
+                R.id.navigationRekap,
+                R.id.navigationSetting,
+            ).build()
+            setupActionBarWithNavController(navController, appBarConfiguration)
+            navView.setupWithNavController(navController)
+        } else {
+            // Handle the case where navHostFragment is null
+            Log.e("MainActivity", "NavHostFragment is null")
+        }
+
+
     }
 
     private fun redirectToLoginScreen() {
