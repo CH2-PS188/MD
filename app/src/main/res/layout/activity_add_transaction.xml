@@ -78,7 +78,7 @@
                     android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"
-                    android:text="Pemasukan" />
+                    android:text="@string/pemasukan" />
 
                 <Button
                     android:id="@+id/btn_expense"
@@ -86,7 +86,7 @@
                     android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"
-                    android:text="Pengeluaran" />
+                    android:text="@string/pengeluaran" />
 
             </com.google.android.material.button.MaterialButtonToggleGroup>
 
@@ -98,13 +98,27 @@
             android:layout_marginTop="16dp"
             android:layout_marginHorizontal="15dp" >
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edt_date"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:inputType="date"
-                android:hint="Tanggal" />
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
+                <ImageButton
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:onClick="showDatePicker"
+                    android:src="@drawable/ic_date" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edt_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="50dp"
+                    android:inputType="date"
+                    android:hint="Tanggal" />
+
+            </FrameLayout>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -118,6 +132,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:hint="Rekening"/>
+
 
         </com.google.android.material.textfield.TextInputLayout>
         

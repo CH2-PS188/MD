@@ -17,4 +17,6 @@
     <string name="back">Back</string>
     <string name="edit_transaction">Edit Transaksi</string>
     <string name="tambah_transaction">Tambah Transaksi</string>
+    <string name="pemasukan">Pemasukan</string>
+    <string name="pengeluaran">Pengeluaran</string>
 </resources>

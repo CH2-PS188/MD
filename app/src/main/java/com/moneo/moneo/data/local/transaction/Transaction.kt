@@ -9,18 +9,21 @@ import kotlinx.parcelize.Parcelize
 @Entity(tableName = "transaction")
 @Parcelize
 data class Transaction (
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id")
-    var id: Int = 0,
-
     @ColumnInfo(name = "date")
     var date: String? = null,
 
-    @ColumnInfo(name = "account")
-    var account: String? = null,
-
     @ColumnInfo(name = "total")
     var total: Int = 0,
+
+    @ColumnInfo(name = "id_account")
+    var idAccount: String? = "UEzUHuSwjQcpDcqBdO8FwkRHOew1",
+
+    @ColumnInfo(name = "description")
+    var description: String? = null,
+
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
+    var id: Int = 0,
 
     @ColumnInfo(name = "title")
     var title: String? = null,
@@ -28,6 +31,9 @@ data class Transaction (
     @ColumnInfo(name = "category")
     var category: String? = null,
 
-    @ColumnInfo(name = "description")
-    var description: String? = null,
+    @ColumnInfo(name = "type")
+    var type: String? = null,
+
+    @ColumnInfo(name = "account")
+    var account: String? = null,
 ) : Parcelable

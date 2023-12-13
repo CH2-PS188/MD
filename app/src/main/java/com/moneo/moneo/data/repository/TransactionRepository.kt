@@ -3,11 +3,13 @@ package com.moneo.moneo.data.repository
 import androidx.lifecycle.LiveData
 import com.moneo.moneo.data.local.transaction.Transaction
 import com.moneo.moneo.data.local.transaction.TransactionDao
+import com.moneo.moneo.data.network.retrofit.ApiService
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 class TransactionRepository private constructor(
-    private val transactionDao: TransactionDao
+    private val transactionDao: TransactionDao,
+    private val apiService: ApiService
 ) {
     private val executorService: ExecutorService = Executors.newSingleThreadExecutor()
 
@@ -35,10 +37,11 @@ class TransactionRepository private constructor(
         @Volatile
         private var INSTANCE: TransactionRepository? = null
         fun getInstance(
-            transactionDao: TransactionDao
+            transactionDao: TransactionDao,
+            apiService: ApiService
         ): TransactionRepository =
             INSTANCE ?: synchronized(this) {
-                INSTANCE ?: TransactionRepository(transactionDao)
+                INSTANCE ?: TransactionRepository(transactionDao, apiService)
             }.also { INSTANCE = it }
     }
 }
