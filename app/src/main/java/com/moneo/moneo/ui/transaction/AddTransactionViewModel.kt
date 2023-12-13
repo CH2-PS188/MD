@@ -10,4 +10,11 @@ class AddTransactionViewModel(private val transactionRepository: TransactionRepo
         transactionRepository.insertTransaction(transaction)
     }
 
+    fun updateTransaction(transaction: Transaction) {
+        transactionRepository.updateTransaction(transaction)
+    }
+
+    fun deleteTransaction(transaction: Transaction) {
+        transactionRepository.deleteTransaction(transaction)
+    }
 }

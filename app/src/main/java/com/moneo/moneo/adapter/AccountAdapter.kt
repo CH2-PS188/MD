@@ -1,5 +1,6 @@
 package com.moneo.moneo.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -7,6 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.moneo.moneo.data.local.account.Account
 import com.moneo.moneo.databinding.ItemAccountBinding
+import com.moneo.moneo.ui.rekening.AddUpdateAccountActivity
 
 
 class AccountAdapter : ListAdapter<Account, AccountAdapter.ViewHolder>(DIFF_CALLBACK) {
@@ -16,6 +18,11 @@ class AccountAdapter : ListAdapter<Account, AccountAdapter.ViewHolder>(DIFF_CALL
             binding.apply {
                 tvAccountName.text = account.name
                 tvAccountBalance.text = account.balance.toString()
+                cvAccount.setOnClickListener {
+                    val intent = Intent(it.context, AddUpdateAccountActivity::class.java)
+                    intent.putExtra(AddUpdateAccountActivity.EXTRA_ACCOUNT, account)
+                    it.context.startActivity(intent)
+                }
             }
         }
     }

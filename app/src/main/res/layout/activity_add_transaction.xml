@@ -28,6 +28,7 @@
                 app:tint="@color/white" />
 
             <TextView
+                android:id="@+id/title_appbar_transaction"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Tambah Transaksi"
@@ -36,6 +37,16 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:layout_gravity="center" />
+
+            <ImageView
+                android:id="@+id/btn_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_delete"
+                android:layout_gravity="end"
+                android:layout_marginEnd="16dp"
+                app:tint="@color/white"
+                android:contentDescription="@string/back" />
 
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
@@ -54,21 +65,28 @@
             android:layout_marginHorizontal="15dp" >
 
             <com.google.android.material.button.MaterialButtonToggleGroup
+                android:id="@+id/toggleGroup"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:singleSelection="true"
+                app:checkedButton="@id/btn_expense">
 
                 <Button
-                    android:layout_width="match_parent"
+                    android:id="@+id/btn_income"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"
-                    android:text="Pemasukan"/>
+                    android:text="Pemasukan" />
 
                 <Button
-                    android:id="@+id/btn_outcome"
-                    android:layout_width="match_parent"
+                    android:id="@+id/btn_expense"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"
-                    android:text="Pengeluaran"/>
+                    android:text="Pengeluaran" />
 
             </com.google.android.material.button.MaterialButtonToggleGroup>
 
@@ -80,10 +98,11 @@
             android:layout_marginTop="16dp"
             android:layout_marginHorizontal="15dp" >
 
-            <EditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edt_date"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:inputType="date"
                 android:hint="Tanggal" />
 
         </com.google.android.material.textfield.TextInputLayout>

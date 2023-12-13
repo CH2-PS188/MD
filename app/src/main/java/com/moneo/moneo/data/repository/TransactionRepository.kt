@@ -19,6 +19,18 @@ class TransactionRepository private constructor(
         }
     }
 
+    fun updateTransaction(transaction: Transaction) {
+        executorService.execute {
+            transactionDao.updateTransaction(transaction)
+        }
+    }
+
+    fun deleteTransaction(transaction: Transaction) {
+        executorService.execute {
+            transactionDao.deleteTransaction(transaction)
+        }
+    }
+
     companion object {
         @Volatile
         private var INSTANCE: TransactionRepository? = null

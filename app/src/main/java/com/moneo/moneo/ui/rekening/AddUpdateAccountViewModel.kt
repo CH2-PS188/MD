@@ -10,4 +10,12 @@ class AddUpdateAccountViewModel(private val accountRepository: AccountRepository
         accountRepository.createAccount(account)
     }
 
+    fun updateAccount(account: Account) {
+        accountRepository.updateAccount(account)
+    }
+
+    fun deleteAccount(account: Account) {
+        accountRepository.deleteAccount(account)
+    }
+
 }

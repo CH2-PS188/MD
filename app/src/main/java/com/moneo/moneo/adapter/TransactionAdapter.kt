@@ -1,6 +1,7 @@
 package com.moneo.moneo.adapter
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -8,6 +9,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.moneo.moneo.data.local.transaction.Transaction
 import com.moneo.moneo.databinding.ItemTransactionBinding
+import com.moneo.moneo.ui.rekening.AddUpdateAccountActivity
+import com.moneo.moneo.ui.transaction.AddTransactionActivity
 
 
 class TransactionAdapter : ListAdapter<Transaction, TransactionAdapter.ViewHolder>(DIFF_CALLBACK){
@@ -19,6 +22,11 @@ class TransactionAdapter : ListAdapter<Transaction, TransactionAdapter.ViewHolde
                 tvItemCategory.text = transaction.category
                 tvItemTotal.text = "Rp ${transaction.total}"
                 tvItemDescription.text = transaction.description
+                cvTransaction.setOnClickListener {
+                    val intent = Intent(it.context, AddTransactionActivity::class.java)
+                    intent.putExtra(AddTransactionActivity.EXTRA_TRANSACTION, transaction)
+                    it.context.startActivity(intent)
+                }
             }
         }
     }

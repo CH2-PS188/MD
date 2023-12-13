@@ -15,6 +15,7 @@
         app:layout_constraintStart_toStartOf="parent" >
 
         <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/blue"
@@ -25,17 +26,28 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_back"
-                app:tint="@color/white" />
+                app:tint="@color/white"
+                android:contentDescription="@string/back" />
 
             <TextView
+                android:id="@+id/title_appbar_account"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tambah Rekening"
                 android:textColor="@color/white"
                 android:textAlignment="center"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:layout_gravity="center" />
+
+            <ImageView
+                android:id="@+id/btn_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_delete"
+                android:layout_gravity="end"
+                android:layout_marginEnd="16dp"
+                app:tint="@color/white"
+                android:contentDescription="@string/back" />
 
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
@@ -55,11 +67,12 @@
             android:layout_marginTop="16dp"
             android:layout_marginHorizontal="15dp" >
 
-            <EditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edt_name"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:hint="Nama Rekening" />
+                android:hint="@string/account_name"
+                android:textColorHint="#546E7A" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -69,11 +82,13 @@
             android:layout_marginTop="16dp"
             android:layout_marginHorizontal="15dp" >
 
-            <EditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edt_balance"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:hint="Saldo" />
+                android:hint="@string/balance"
+                android:textColorHint="#546E7A"
+                android:inputType="number"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -82,9 +97,9 @@
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_gravity="end"
-            android:text="Simpan"
+            android:layout_marginHorizontal="15dp"
             android:layout_marginTop="16dp"
-            android:layout_marginHorizontal="15dp" />
+            android:text="@string/save" />
 
     </LinearLayout>
 

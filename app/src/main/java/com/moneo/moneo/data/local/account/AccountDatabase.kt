@@ -10,7 +10,7 @@ import com.moneo.moneo.data.local.transaction.TransactionDatabase
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-@Database(entities = [Account::class], version = 2)
+@Database(entities = [Account::class], version = 1)
 abstract class AccountDatabase : RoomDatabase() {
 
     abstract fun accountDao(): AccountDao

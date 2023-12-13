@@ -20,6 +20,18 @@ class AccountRepository private constructor(
         }
     }
 
+    fun updateAccount(account: Account) {
+        executorService.execute {
+            accountDao.updateAccount(account)
+        }
+    }
+
+    fun deleteAccount(account: Account) {
+        executorService.execute {
+            accountDao.deleteAccount(account)
+        }
+    }
+
     companion object {
         @Volatile
         private var INSTANCE: AccountRepository? = null

@@ -5,4 +5,16 @@
     <string name="navigation_transaction">Transaksi</string>
     <string name="navigation_account">Rekening</string>
     <string name="navigation_report">Rekap</string>
+
+    <string name="add_account">Tambah Rekening</string>
+    <string name="edit_account">Edit Rekening</string>
+    <string name="delete_account">Delete Rekening</string>
+
+    <string name="account_name">Nama Rekening</string>
+    <string name="balance">Saldo</string>
+
+    <string name="save">Simpan</string>
+    <string name="back">Back</string>
+    <string name="edit_transaction">Edit Transaksi</string>
+    <string name="tambah_transaction">Tambah Transaksi</string>
 </resources>

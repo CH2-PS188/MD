@@ -1,10 +1,13 @@
 package com.moneo.moneo.data.local.transaction
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.parcelize.Parcelize
 
 @Entity(tableName = "transaction")
+@Parcelize
 data class Transaction (
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
@@ -27,6 +30,4 @@ data class Transaction (
 
     @ColumnInfo(name = "description")
     var description: String? = null,
-
-
-)
+) : Parcelable
