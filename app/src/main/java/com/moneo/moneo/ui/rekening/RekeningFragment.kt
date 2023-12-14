@@ -8,14 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.moneo.moneo.R
 import com.moneo.moneo.ViewModelFactory
-import com.moneo.moneo.adapter.AccountAdapter
-import com.moneo.moneo.databinding.FragmentAccountBinding
+import com.moneo.moneo.adapter.RekeningAdapter
+import com.moneo.moneo.databinding.FragmentRekeningBinding
 
-class AccountFragment : Fragment() {
+class RekeningFragment : Fragment() {
 
-    private var _binding: FragmentAccountBinding? = null
+    private var _binding: FragmentRekeningBinding? = null
     private val binding get() = _binding
 
     override fun onCreateView(
@@ -23,7 +22,7 @@ class AccountFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        _binding = FragmentAccountBinding.inflate(inflater, container, false)
+        _binding = FragmentRekeningBinding.inflate(inflater, container, false)
         return binding?.root
     }
 
@@ -31,25 +30,25 @@ class AccountFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val factory: ViewModelFactory = ViewModelFactory.getInstance(requireActivity())
-        val viewModel: AccountViewModel by viewModels {
+        val viewModel: RekeningViewModel by viewModels {
             factory
         }
 
-        val accountsAdapter = AccountAdapter()
+        val rekeningAdapter = RekeningAdapter()
 
-        viewModel.getAllAccounts().observe(viewLifecycleOwner) { listAccounts ->
-            if (listAccounts != null) {
-                accountsAdapter.submitList(listAccounts)
+        viewModel.getAllRekening().observe(viewLifecycleOwner) { listRekening ->
+            if (listRekening != null) {
+                rekeningAdapter.submitList(listRekening)
             }
         }
 
-        binding?.rvAccounts?.apply {
+        binding?.rvRekening?.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = accountsAdapter
+            adapter = rekeningAdapter
         }
 
         binding?.btnFab?.setOnClickListener {
-            val intent = Intent(activity, AddUpdateAccountActivity::class.java)
+            val intent = Intent(activity, AddUpdateRekeningActivity::class.java)
             startActivity(intent)
         }
 

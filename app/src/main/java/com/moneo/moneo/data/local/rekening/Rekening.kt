@@ -1,18 +1,17 @@
-package com.moneo.moneo.data.local.account
+package com.moneo.moneo.data.local.rekening
 
 import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
-import org.jetbrains.annotations.NotNull
 
-@Entity(tableName = "account")
+@Entity(tableName = "rekening")
 @Parcelize
-data class Account(
+data class Rekening (
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    var accountId : Int = 0,
+    var rekeningId : Int = 0,
 
     @ColumnInfo(name = "name")
     var name : String? = null,

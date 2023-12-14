@@ -1,15 +1,16 @@
 package com.moneo.moneo.data.repository
 
 import androidx.lifecycle.LiveData
+import com.moneo.moneo.data.local.rekening.Rekening
+import com.moneo.moneo.data.local.rekening.RekeningDao
 import com.moneo.moneo.data.local.transaction.Transaction
 import com.moneo.moneo.data.local.transaction.TransactionDao
-import com.moneo.moneo.data.network.retrofit.ApiService
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 class TransactionRepository private constructor(
     private val transactionDao: TransactionDao,
-    private val apiService: ApiService
+    private val rekeningDao: RekeningDao
 ) {
     private val executorService: ExecutorService = Executors.newSingleThreadExecutor()
 
@@ -33,15 +34,23 @@ class TransactionRepository private constructor(
         }
     }
 
+    fun getAllRekeningForSpinner(): LiveData<List<Rekening>> = rekeningDao.getAllRekening()
+
+    fun setUpdateRekening(rekening: Rekening) {
+        executorService.execute {
+            rekeningDao.updateRekening(rekening)
+        }
+    }
+
     companion object {
         @Volatile
         private var INSTANCE: TransactionRepository? = null
         fun getInstance(
             transactionDao: TransactionDao,
-            apiService: ApiService
+            rekeningDao: RekeningDao
         ): TransactionRepository =
             INSTANCE ?: synchronized(this) {
-                INSTANCE ?: TransactionRepository(transactionDao, apiService)
+                INSTANCE ?: TransactionRepository(transactionDao, rekeningDao)
             }.also { INSTANCE = it }
     }
 }

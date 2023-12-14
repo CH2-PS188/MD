@@ -13,10 +13,10 @@
         android:theme="@style/Theme.Moneo"
         tools:targetApi="31">
         <activity
-            android:name=".ui.rekening.AddUpdateAccountActivity"
+            android:name=".ui.rekening.AddUpdateRekeningActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.transaction.AddTransactionActivity"
+            android:name=".ui.transaction.AddUpdateTransactionActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/light_grey"
-    tools:context=".ui.rekening.AccountFragment">
+    tools:context=".ui.rekening.RekeningFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
@@ -35,10 +35,10 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_accounts"
+        android:id="@+id/rv_rekening"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        tools:listitem="@layout/item_account"
+        tools:listitem="@layout/item_rekening"
         app:layout_constraintTop_toBottomOf="@id/appbar"
         app:layout_constraintBottom_toBottomOf="parent" />
 

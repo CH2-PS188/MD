@@ -4,15 +4,13 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import com.moneo.moneo.databinding.ActivityMainBinding
-import com.moneo.moneo.ui.rekening.AccountFragment
+import com.moneo.moneo.ui.rekening.RekeningFragment
 import com.moneo.moneo.ui.transaction.TransactionFragment
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +27,7 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.action_account -> {
-                    switchFragment(AccountFragment())
+                    switchFragment(RekeningFragment())
                     true
                 }
                 else -> false

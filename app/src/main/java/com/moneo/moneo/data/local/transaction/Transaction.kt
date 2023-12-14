@@ -34,6 +34,6 @@ data class Transaction (
     @ColumnInfo(name = "type")
     var type: String? = null,
 
-    @ColumnInfo(name = "account")
-    var account: String? = null,
+    @ColumnInfo(name = "rekening")
+    var rekening: String? = null,
 ) : Parcelable

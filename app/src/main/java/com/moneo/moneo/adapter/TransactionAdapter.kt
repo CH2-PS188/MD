@@ -9,13 +9,12 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.moneo.moneo.data.local.transaction.Transaction
 import com.moneo.moneo.databinding.ItemTransactionBinding
-import com.moneo.moneo.ui.rekening.AddUpdateAccountActivity
-import com.moneo.moneo.ui.transaction.AddTransactionActivity
+import com.moneo.moneo.ui.transaction.AddUpdateTransactionActivity
 
 
 class TransactionAdapter : ListAdapter<Transaction, TransactionAdapter.ViewHolder>(DIFF_CALLBACK){
 
-    class ViewHolder(val binding: ItemTransactionBinding) : RecyclerView.ViewHolder(binding.root){
+    class ViewHolder(private val binding: ItemTransactionBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(transaction: Transaction) {
             binding.apply {
                 tvItemTitle.text = transaction.title
@@ -23,8 +22,8 @@ class TransactionAdapter : ListAdapter<Transaction, TransactionAdapter.ViewHolde
                 tvItemTotal.text = "Rp ${transaction.total}"
                 tvItemDescription.text = transaction.description
                 cvTransaction.setOnClickListener {
-                    val intent = Intent(it.context, AddTransactionActivity::class.java)
-                    intent.putExtra(AddTransactionActivity.EXTRA_TRANSACTION, transaction)
+                    val intent = Intent(it.context, AddUpdateTransactionActivity::class.java)
+                    intent.putExtra(AddUpdateTransactionActivity.EXTRA_TRANSACTION, transaction)
                     it.context.startActivity(intent)
                 }
             }

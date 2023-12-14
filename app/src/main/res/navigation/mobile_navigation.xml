@@ -13,8 +13,8 @@
 
     <fragment
         android:id="@+id/navigationRekening"
-        android:name="com.moneo.moneo.ui.rekening.AccountFragment"
+        android:name="com.moneo.moneo.ui.rekening.RekeningFragment"
         android:label="@string/navigation_account"
-        tools:layout="@layout/fragment_account" />
+        tools:layout="@layout/fragment_rekening" />
 
 </navigation>

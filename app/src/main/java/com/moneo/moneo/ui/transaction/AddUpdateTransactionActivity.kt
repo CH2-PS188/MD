@@ -1,30 +1,29 @@
 package com.moneo.moneo.ui.transaction
 
-import android.app.DatePickerDialog
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.DatePicker
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.moneo.moneo.MainActivity
 import com.moneo.moneo.R
 import com.moneo.moneo.ViewModelFactory
 import com.moneo.moneo.data.local.transaction.Transaction
-import com.moneo.moneo.databinding.ActivityAddTransactionBinding
+import com.moneo.moneo.databinding.ActivityAddUpdateTransactionBinding
 import com.moneo.moneo.utils.DatePickerFragment
+import com.moneo.moneo.utils.TimePickerFragment
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
-class AddTransactionActivity : AppCompatActivity(), DatePickerFragment.DialogDateListener {
+class AddUpdateTransactionActivity : AppCompatActivity(), DatePickerFragment.DialogDateListener, TimePickerFragment.DialogTimeListener {
 
     private var dueDateMillis: Long = System.currentTimeMillis()
 
-    private lateinit var binding: ActivityAddTransactionBinding
+    private lateinit var binding: ActivityAddUpdateTransactionBinding
+
+    private val viewModel: AddUpdateTransactionViewModel by viewModels {
+        ViewModelFactory.getInstance(this)
+    }
 
     private var transaction: Transaction? = null
     private var isEdit = false
@@ -33,13 +32,8 @@ class AddTransactionActivity : AppCompatActivity(), DatePickerFragment.DialogDat
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityAddTransactionBinding.inflate(layoutInflater)
+        binding = ActivityAddUpdateTransactionBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        val factory: ViewModelFactory = ViewModelFactory.getInstance(this)
-        val viewModel: AddTransactionViewModel by viewModels {
-            factory
-        }
 
         transaction = intent.getParcelableExtra(EXTRA_TRANSACTION)
         if (transaction != null) {
@@ -63,8 +57,9 @@ class AddTransactionActivity : AppCompatActivity(), DatePickerFragment.DialogDat
                         } else {
                             toggleGroup.check(R.id.btn_expense)
                         }
-                        edtDate.setText(transaction.date.toString())
-                        edtRekening.setText(transaction.account)
+                        val parts = transaction.date?.split(" ")
+                        edtDate.setText(parts?.get(0))
+                        edtTime.setText(parts?.get(1))
                         edtTotal.setText(transaction.total.toString())
                         edtTitle.setText(transaction.title)
                         edtCategory.setText(transaction.category)
@@ -85,24 +80,32 @@ class AddTransactionActivity : AppCompatActivity(), DatePickerFragment.DialogDat
 
         binding.btnDelete.setOnClickListener {
             viewModel.deleteTransaction(transaction as Transaction)
-            Toast.makeText(this@AddTransactionActivity, "${transaction?.title} berhasil dihapus!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@AddUpdateTransactionActivity, "${transaction?.title} berhasil dihapus!", Toast.LENGTH_SHORT).show()
             finish()
+        }
+
+        binding.btnDate.setOnClickListener {
+            showDatePicker()
+        }
+
+        binding.btnTime.setOnClickListener {
+            showTimePicker()
         }
 
         binding.apply {
             toggleGroup.addOnButtonCheckedListener { group, _, _ ->
                 jenisTransaksi = if (group.checkedButtonId == R.id.btn_income) {
-                    Toast.makeText(this@AddTransactionActivity, "${btnIncome.text}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@AddUpdateTransactionActivity, "${btnIncome.text}", Toast.LENGTH_SHORT).show()
                     "pemasukan"
                 } else {
-                    Toast.makeText(this@AddTransactionActivity, "${btnExpense.text}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@AddUpdateTransactionActivity, "${btnExpense.text}", Toast.LENGTH_SHORT).show()
                     "pengeluaran"
                 }
             }
 
             btnSave.setOnClickListener {
                 val date = edtDate.text.toString()
-                val rekening = edtRekening.text.toString()
+                val time = edtTime.text.toString()
                 val total = edtTotal.text.toString()
                 val title = edtTitle.text.toString()
                 val category = edtCategory.text.toString()
@@ -111,8 +114,8 @@ class AddTransactionActivity : AppCompatActivity(), DatePickerFragment.DialogDat
                     date.isEmpty() -> {
                         binding.edtDate.error = "Field can not be blank"
                     }
-                    rekening.isEmpty() -> {
-                        binding.edtRekening.error = "Field can not be blank"
+                    time.isEmpty() -> {
+                        binding.edtTime.error = "Field can not be blank"
                     }
                     total.isEmpty() -> {
                         binding.edtTotal.error = "Field can not be blank"
@@ -128,21 +131,22 @@ class AddTransactionActivity : AppCompatActivity(), DatePickerFragment.DialogDat
                     }
                     else -> {
                         transaction.let { transaction ->
-                            transaction?.date = date
-                            transaction?.account = rekening
+                            transaction?.date = "$date $time"
                             transaction?.total = total.toInt()
                             transaction?.title = title
                             transaction?.category = category
                             transaction?.description = description
-                            transaction?.type = jenisTransaksi
+                            transaction?.type = jenisTransaksi ?: "pengeluaran"
                         }
+
                         if (isEdit) {
                             viewModel.updateTransaction(transaction as Transaction)
-                            Toast.makeText(this@AddTransactionActivity, "${transaction?.title} berhasil diubah!", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@AddUpdateTransactionActivity, "${transaction?.title} berhasil diubah!", Toast.LENGTH_SHORT).show()
                         } else {
                             viewModel.insertTransaction(transaction as Transaction)
-                            Toast.makeText(this@AddTransactionActivity, "${transaction?.title} berhasil dibuat!", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@AddUpdateTransactionActivity, "${transaction?.title} berhasil dibuat!", Toast.LENGTH_SHORT).show()
                         }
+
                         finish()
                     }
                 }
@@ -150,7 +154,7 @@ class AddTransactionActivity : AppCompatActivity(), DatePickerFragment.DialogDat
         }
     }
 
-    fun showDatePicker(view: View) {
+    private fun showDatePicker() {
         val dialogFragment = DatePickerFragment()
         dialogFragment.show(supportFragmentManager, "datePicker")
     }
@@ -159,12 +163,26 @@ class AddTransactionActivity : AppCompatActivity(), DatePickerFragment.DialogDat
         val calendar = Calendar.getInstance()
         calendar.set(year, month, dayOfMonth)
         val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-        findViewById<TextView>(R.id.edt_date).text = dateFormat.format(calendar.time)
-
+        binding.edtDate.setText(dateFormat.format(calendar.time))
         dueDateMillis = calendar.timeInMillis
+    }
+
+    private fun showTimePicker() {
+        val dialogFragment = TimePickerFragment()
+        dialogFragment.show(supportFragmentManager, "timePicker")
+    }
+
+    override fun onDialogTimeSet(tag: String?, hour: Int, minute: Int) {
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.HOUR_OF_DAY, hour)
+        calendar.set(Calendar.MINUTE, minute)
+        val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+        binding.edtTime.setText(timeFormat.format(calendar.time))
     }
 
     companion object {
         const val EXTRA_TRANSACTION = "extra_transaction"
     }
+
+
 }

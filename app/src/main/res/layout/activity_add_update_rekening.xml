@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.rekening.AddUpdateAccountActivity">
+    tools:context=".ui.rekening.AddUpdateRekeningActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
@@ -30,7 +30,7 @@
                 android:contentDescription="@string/back" />
 
             <TextView
-                android:id="@+id/title_appbar_account"
+                android:id="@+id/title_appbar_rekening"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
