@@ -56,6 +56,7 @@ class AccountFragment : Fragment() {
 
         rekeningVM.success.observe(viewLifecycleOwner, Observer {
             rekeningAdapter = RekeningAdapter(it.rekenings)
+            binding?.tvAccountBalance?.text = it.totalSaldo
             binding?.rvAccounts?.adapter = rekeningAdapter
             binding?.rvAccounts?.adapter?.notifyDataSetChanged()
             Log.e("Rekap Fragment", "Succes: ${it.rekenings}")

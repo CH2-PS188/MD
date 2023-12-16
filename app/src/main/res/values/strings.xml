@@ -82,5 +82,6 @@
     <string name="simpan">Simpan</string>
     <string name="total">Rp 100.000.000</string>
     <string name="nama_rekening">Nama Rekening</string>
+    <string name="total_saldo">Total Saldo</string>
 
 </resources>
