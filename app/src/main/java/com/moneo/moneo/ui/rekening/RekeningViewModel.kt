@@ -7,9 +7,8 @@ import com.moneo.moneo.data.repository.RekeningRepository
 
 class RekeningViewModel(private val rekeningRepository: RekeningRepository) : ViewModel() {
 
-    fun getAllRekening(): LiveData<List<Rekening>> = rekeningRepository.getAllRekening()
-
-
-    val id = "12345"
+    fun getAllRekening(): LiveData<List<Rekening>> {
+        return rekeningRepository.getAllRekening()
+    }
 
 }

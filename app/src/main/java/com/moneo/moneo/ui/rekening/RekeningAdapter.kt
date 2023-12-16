@@ -1,4 +1,4 @@
-package com.moneo.moneo.adapter
+package com.moneo.moneo.ui.rekening
 
 import android.content.Intent
 import android.view.LayoutInflater
@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.moneo.moneo.R
 import com.moneo.moneo.data.local.rekening.Rekening
 import com.moneo.moneo.databinding.ItemRekeningBinding
-import com.moneo.moneo.ui.rekening.AddUpdateRekeningActivity
 
 
 class RekeningAdapter : ListAdapter<Rekening, RekeningAdapter.ViewHolder>(DIFF_CALLBACK) {
@@ -17,7 +17,13 @@ class RekeningAdapter : ListAdapter<Rekening, RekeningAdapter.ViewHolder>(DIFF_C
         fun bind(rekening: Rekening) {
             binding.apply {
                 tvRekeningName.text = rekening.name
-                tvRekeningBalance.text = rekening.balance.toString()
+                if (rekening.balance < 0) {
+                    tvRekeningBalance.setTextColor(itemView.context.resources.getColor(R.color.red))
+                    tvRekeningBalance.text = rekening.balance.toString()
+                } else {
+                    tvRekeningBalance.setTextColor(itemView.context.resources.getColor(R.color.black))
+                    tvRekeningBalance.text = rekening.balance.toString()
+                }
                 cvAccount.setOnClickListener {
                     val intent = Intent(it.context, AddUpdateRekeningActivity::class.java)
                     intent.putExtra(AddUpdateRekeningActivity.EXTRA_ACCOUNT, rekening)

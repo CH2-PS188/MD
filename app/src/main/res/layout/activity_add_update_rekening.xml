@@ -70,7 +70,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edt_name"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="53dp"
+                android:maxLines="1"
                 android:hint="@string/account_name"
                 android:textColorHint="#546E7A" />
 
@@ -85,7 +86,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edt_balance"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="53dp"
+                android:maxLength="10"
                 android:hint="@string/balance"
                 android:textColorHint="#546E7A"
                 android:inputType="number"/>

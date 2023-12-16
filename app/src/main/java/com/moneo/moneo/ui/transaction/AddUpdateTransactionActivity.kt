@@ -2,15 +2,24 @@ package com.moneo.moneo.ui.transaction
 
 import android.os.Bundle
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import com.moneo.moneo.R
 import com.moneo.moneo.ViewModelFactory
+import com.moneo.moneo.data.local.rekening.Rekening
 import com.moneo.moneo.data.local.transaction.Transaction
 import com.moneo.moneo.databinding.ActivityAddUpdateTransactionBinding
 import com.moneo.moneo.utils.DatePickerFragment
 import com.moneo.moneo.utils.TimePickerFragment
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -42,121 +51,150 @@ class AddUpdateTransactionActivity : AppCompatActivity(), DatePickerFragment.Dia
             transaction = Transaction()
         }
 
-        val jenis = transaction?.type
+        binding.btnSave.isEnabled = false
 
-        val titlebar: String
+        viewModel.rekeningList.observe(this) { listRekening ->
+            val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, listRekening.map { it.name })
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.spinnerRekening.adapter = adapter
 
-        if (isEdit) {
-            titlebar = getString(R.string.edit_transaction)
-            binding.btnDelete.visibility = View.VISIBLE
-            if (transaction != null) {
-                transaction?.let { transaction ->
-                    binding.apply {
-                        if (jenis == "pemasukan") {
-                            toggleGroup.check(R.id.btn_income)
-                        } else {
-                            toggleGroup.check(R.id.btn_expense)
+            val titlebar: String
+
+            if (listRekening.isNotEmpty()) {
+                binding.btnSave.isEnabled = true
+                binding.warningRekening.isGone = true
+            }
+
+            if (isEdit) {
+                titlebar = getString(R.string.edit_transaction)
+                binding.btnDelete.visibility = View.VISIBLE
+                if (transaction != null) {
+                    transaction?.let { transaction ->
+                        binding.apply {
+                            if (transaction.type == "pemasukan") {
+                                toggleGroup.check(R.id.btn_income)
+                            } else {
+                                toggleGroup.check(R.id.btn_expense)
+                            }
+                            val parts = transaction.date?.split(" ")
+                            edtDate.setText(parts?.get(0))
+                            edtTime.setText(parts?.get(1))
+                            val rekeningIndex = findRekeningIndexInList(listRekening, transaction.rekening)
+                            spinnerRekening.setSelection(rekeningIndex)
+                            edtTotal.setText(transaction.total.toString())
+                            edtTitle.setText(transaction.title)
+                            edtCategory.setText(transaction.category)
+                            edtDescription.setText(transaction.description)
                         }
-                        val parts = transaction.date?.split(" ")
-                        edtDate.setText(parts?.get(0))
-                        edtTime.setText(parts?.get(1))
-                        edtTotal.setText(transaction.total.toString())
-                        edtTitle.setText(transaction.title)
-                        edtCategory.setText(transaction.category)
-                        edtDescription.setText(transaction.description)
                     }
                 }
+            } else {
+                titlebar = getString(R.string.tambah_transaction)
+                binding.btnDelete.visibility = View.GONE
             }
-        } else {
-            titlebar = getString(R.string.tambah_transaction)
-            binding.btnDelete.visibility = View.GONE
+
+            binding.titleAppbarTransaction.text = titlebar
         }
 
-        binding.titleAppbarTransaction.text = titlebar
+        backToHome()
+        showDatePicker()
+        showTimePicker()
+        saveTransaction()
+        deleteTransaction()
+    }
 
-        binding.btnBack.setOnClickListener {
-            finish()
+    private fun saveTransaction() {
+        binding.btnSave.setOnClickListener {
+            val date = binding.edtDate.text.toString()
+            val time = binding.edtTime.text.toString()
+            val rekening = binding.spinnerRekening.selectedItem.toString()
+            val total = binding.edtTotal.text.toString()
+            val title = binding.edtTitle.text.toString()
+            val category = binding.edtCategory.text.toString()
+            val description = binding.edtDescription.text.toString()
+
+            if (validateInput(date, time, rekening, total, title, category)) {
+                jenisTransaksi = if (binding.toggleGroup.checkedButtonId == R.id.btn_income) {
+                    "pemasukan"
+                } else {
+                    "pengeluaran"
+                }
+                lifecycleScope.launch(Dispatchers.IO) {
+                    transaction?.apply {
+                        this.date = "$date $time"
+                        this.rekening = rekening
+                        this.total = total.toInt()
+                        this.title = title
+                        this.category = category
+                        this.description = description
+                        this.type = jenisTransaksi ?: "pengeluaran"
+                    }
+                    if (isEdit) {
+                        viewModel.updateTransaction(transaction as Transaction)
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(this@AddUpdateTransactionActivity, "${transaction?.title} berhasil diubah!", Toast.LENGTH_SHORT).show()
+                        }
+                    } else {
+                        viewModel.insertTransaction(transaction as Transaction)
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(this@AddUpdateTransactionActivity, "${transaction?.title} berhasil dibuat!", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+                finish()
+            }
         }
+    }
 
+    private fun validateInput(date: String, time: String, rekening: String, total: String, title: String, category: String): Boolean {
+        return when {
+            date.isEmpty() -> {
+                binding.edtDate.error = "Field can not be blank"
+                false
+            }
+            time.isEmpty() -> {
+                binding.edtTime.error = "Field can not be blank"
+                false
+            }
+            rekening.isEmpty() -> {
+                Toast.makeText(this@AddUpdateTransactionActivity, "Rekening kosong", Toast.LENGTH_SHORT).show()
+                false
+            }
+            total.isEmpty() -> {
+                binding.edtTotal.error = "Field can not be blank"
+                false
+            }
+            title.isEmpty() -> {
+                binding.edtTitle.error = "Field can not be blank"
+                false
+            }
+            category.isEmpty() -> {
+                binding.edtCategory.error = "Field can not be blank"
+                false
+            }
+            else -> true
+        }
+    }
+
+    private fun deleteTransaction() {
         binding.btnDelete.setOnClickListener {
             viewModel.deleteTransaction(transaction as Transaction)
             Toast.makeText(this@AddUpdateTransactionActivity, "${transaction?.title} berhasil dihapus!", Toast.LENGTH_SHORT).show()
             finish()
         }
+    }
 
-        binding.btnDate.setOnClickListener {
-            showDatePicker()
-        }
-
-        binding.btnTime.setOnClickListener {
-            showTimePicker()
-        }
-
-        binding.apply {
-            toggleGroup.addOnButtonCheckedListener { group, _, _ ->
-                jenisTransaksi = if (group.checkedButtonId == R.id.btn_income) {
-                    Toast.makeText(this@AddUpdateTransactionActivity, "${btnIncome.text}", Toast.LENGTH_SHORT).show()
-                    "pemasukan"
-                } else {
-                    Toast.makeText(this@AddUpdateTransactionActivity, "${btnExpense.text}", Toast.LENGTH_SHORT).show()
-                    "pengeluaran"
-                }
-            }
-
-            btnSave.setOnClickListener {
-                val date = edtDate.text.toString()
-                val time = edtTime.text.toString()
-                val total = edtTotal.text.toString()
-                val title = edtTitle.text.toString()
-                val category = edtCategory.text.toString()
-                val description = edtDescription.text.toString()
-                when {
-                    date.isEmpty() -> {
-                        binding.edtDate.error = "Field can not be blank"
-                    }
-                    time.isEmpty() -> {
-                        binding.edtTime.error = "Field can not be blank"
-                    }
-                    total.isEmpty() -> {
-                        binding.edtTotal.error = "Field can not be blank"
-                    }
-                    title.isEmpty() -> {
-                        binding.edtTitle.error = "Field can not be blank"
-                    }
-                    category.isEmpty() -> {
-                        binding.edtCategory.error = "Field can not be blank"
-                    }
-                    description.isEmpty() -> {
-                        binding.edtDescription.error = "Field can not be blank"
-                    }
-                    else -> {
-                        transaction.let { transaction ->
-                            transaction?.date = "$date $time"
-                            transaction?.total = total.toInt()
-                            transaction?.title = title
-                            transaction?.category = category
-                            transaction?.description = description
-                            transaction?.type = jenisTransaksi ?: "pengeluaran"
-                        }
-
-                        if (isEdit) {
-                            viewModel.updateTransaction(transaction as Transaction)
-                            Toast.makeText(this@AddUpdateTransactionActivity, "${transaction?.title} berhasil diubah!", Toast.LENGTH_SHORT).show()
-                        } else {
-                            viewModel.insertTransaction(transaction as Transaction)
-                            Toast.makeText(this@AddUpdateTransactionActivity, "${transaction?.title} berhasil dibuat!", Toast.LENGTH_SHORT).show()
-                        }
-
-                        finish()
-                    }
-                }
-            }
+    private fun backToHome() {
+        binding.btnBack.setOnClickListener {
+            finish()
         }
     }
 
     private fun showDatePicker() {
-        val dialogFragment = DatePickerFragment()
-        dialogFragment.show(supportFragmentManager, "datePicker")
+        binding.btnDate.setOnClickListener {
+            val dialogFragment = DatePickerFragment()
+            dialogFragment.show(supportFragmentManager, "datePicker")
+        }
     }
 
     override fun onDialogDateSet(tag: String?, year: Int, month: Int, dayOfMonth: Int) {
@@ -168,8 +206,10 @@ class AddUpdateTransactionActivity : AppCompatActivity(), DatePickerFragment.Dia
     }
 
     private fun showTimePicker() {
-        val dialogFragment = TimePickerFragment()
-        dialogFragment.show(supportFragmentManager, "timePicker")
+        binding.btnTime.setOnClickListener {
+            val dialogFragment = TimePickerFragment()
+            dialogFragment.show(supportFragmentManager, "timePicker")
+        }
     }
 
     override fun onDialogTimeSet(tag: String?, hour: Int, minute: Int) {
@@ -179,6 +219,16 @@ class AddUpdateTransactionActivity : AppCompatActivity(), DatePickerFragment.Dia
         val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
         binding.edtTime.setText(timeFormat.format(calendar.time))
     }
+
+    private fun findRekeningIndexInList(rekeningList: List<Rekening>, rekeningName: String?): Int {
+        for ((index, rekening) in rekeningList.withIndex()) {
+            if (rekening.name == rekeningName) {
+                return index
+            }
+        }
+        return 0
+    }
+
 
     companion object {
         const val EXTRA_TRANSACTION = "extra_transaction"

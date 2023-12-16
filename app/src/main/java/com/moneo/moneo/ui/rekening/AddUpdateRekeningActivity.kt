@@ -17,15 +17,14 @@ class AddUpdateRekeningActivity : AppCompatActivity() {
     private var rekening: Rekening? = null
     private var isEdit = false
 
+    private val viewModel: AddUpdateRekeningViewModel by viewModels {
+        ViewModelFactory.getInstance(this)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddUpdateRekeningBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        val factory: ViewModelFactory = ViewModelFactory.getInstance(this)
-        val viewModel: AddUpdateRekeningViewModel by viewModels {
-            factory
-        }
 
         rekening = intent.getParcelableExtra(EXTRA_ACCOUNT)
         if (rekening != null) {
@@ -34,34 +33,36 @@ class AddUpdateRekeningActivity : AppCompatActivity() {
             rekening = Rekening()
         }
 
-        val titlebar : String
+        val titleBar : String
 
         if (isEdit) {
-            titlebar = getString(R.string.edit_account)
+            titleBar = getString(R.string.edit_account)
             binding.btnDelete.visibility = View.VISIBLE
             if (rekening != null) {
-                rekening?.let { account ->
-                    binding.edtName.setText(account.name)
-                    binding.edtBalance.setText(account.balance.toString())
+                rekening?.let { rekening ->
+                    binding.edtName.setText(rekening.name)
+                    binding.edtBalance.setText(rekening.balance.toString())
                 }
             }
         } else {
-            titlebar = getString(R.string.add_account)
+            titleBar = getString(R.string.add_account)
             binding.btnDelete.visibility = View.GONE
         }
 
-        binding.titleAppbarRekening.text = titlebar
+        binding.titleAppbarRekening.text = titleBar
 
+        saveRekening()
+        backToHome()
+        deleteRekening()
+    }
+
+    private fun backToHome() {
         binding.btnBack.setOnClickListener {
             finish()
         }
+    }
 
-        binding.btnDelete.setOnClickListener {
-            viewModel.deleteRekening(rekening as Rekening)
-            Toast.makeText(this@AddUpdateRekeningActivity, "${rekening?.name} berhasil dihapus!", Toast.LENGTH_SHORT).show()
-            finish()
-        }
-
+    private fun saveRekening() {
         binding.apply {
             btnSubmit.setOnClickListener {
                 val name = edtName.text.toString()
@@ -74,9 +75,9 @@ class AddUpdateRekeningActivity : AppCompatActivity() {
                         binding.edtBalance.error = "Field can not be blank"
                     }
                     else -> {
-                        rekening.let { account ->
-                            account?.name = name
-                            account?.balance = balance.toInt()
+                        rekening.let { rekening ->
+                            rekening?.name = name
+                            rekening?.balance = balance.toInt()
                         }
                         if (isEdit) {
                             viewModel.updateRekening(rekening as Rekening)
@@ -89,6 +90,14 @@ class AddUpdateRekeningActivity : AppCompatActivity() {
                     }
                 }
             }
+        }
+    }
+
+    private fun deleteRekening() {
+        binding.btnDelete.setOnClickListener {
+            viewModel.deleteRekening(rekening as Rekening)
+            Toast.makeText(this@AddUpdateRekeningActivity, "${rekening?.name} berhasil dihapus!", Toast.LENGTH_SHORT).show()
+            finish()
         }
     }
 

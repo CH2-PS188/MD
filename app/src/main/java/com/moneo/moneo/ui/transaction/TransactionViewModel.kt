@@ -7,6 +7,8 @@ import com.moneo.moneo.data.repository.TransactionRepository
 
 class TransactionViewModel (private val transactionRepository: TransactionRepository) : ViewModel() {
 
-    fun getAllTransaction(): LiveData<List<Transaction>> = transactionRepository.getAllTransaction()
+    fun getAllTransaction(): LiveData<List<Transaction>> {
+        return transactionRepository.getAllTransaction()
+    }
 
 }

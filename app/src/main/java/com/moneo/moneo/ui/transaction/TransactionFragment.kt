@@ -9,13 +9,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.moneo.moneo.ViewModelFactory
-import com.moneo.moneo.adapter.TransactionAdapter
 import com.moneo.moneo.databinding.FragmentTransactionBinding
 
 class TransactionFragment : Fragment() {
 
     private var _binding: FragmentTransactionBinding? = null
     private val binding get() = _binding
+
+    private val viewModel: TransactionViewModel by viewModels {
+        ViewModelFactory.getInstance(requireActivity())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,11 +32,11 @@ class TransactionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val factory: ViewModelFactory = ViewModelFactory.getInstance(requireActivity())
-        val viewModel: TransactionViewModel by viewModels {
-            factory
-        }
+        setListTransaction()
+        setFabClick()
+    }
 
+    private fun setListTransaction() {
         val transactionAdapter = TransactionAdapter()
 
         viewModel.getAllTransaction().observe(viewLifecycleOwner) { result ->
@@ -47,10 +50,14 @@ class TransactionFragment : Fragment() {
             setHasFixedSize(true)
             adapter = transactionAdapter
         }
+    }
 
+    private fun setFabClick() {
         binding?.btnFab?.setOnClickListener {
             val intent = Intent(activity, AddUpdateTransactionActivity::class.java)
             startActivity(intent)
         }
     }
+
+
 }

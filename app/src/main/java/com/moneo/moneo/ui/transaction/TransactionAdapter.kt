@@ -1,4 +1,4 @@
-package com.moneo.moneo.adapter
+package com.moneo.moneo.ui.transaction
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.moneo.moneo.R
 import com.moneo.moneo.data.local.transaction.Transaction
 import com.moneo.moneo.databinding.ItemTransactionBinding
-import com.moneo.moneo.ui.transaction.AddUpdateTransactionActivity
 
 
 class TransactionAdapter : ListAdapter<Transaction, TransactionAdapter.ViewHolder>(DIFF_CALLBACK){
@@ -17,9 +17,16 @@ class TransactionAdapter : ListAdapter<Transaction, TransactionAdapter.ViewHolde
     class ViewHolder(private val binding: ItemTransactionBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(transaction: Transaction) {
             binding.apply {
+                tvItemDate.text = transaction.date
                 tvItemTitle.text = transaction.title
                 tvItemCategory.text = transaction.category
-                tvItemTotal.text = "Rp ${transaction.total}"
+                if (transaction.type == "pengeluaran") {
+                    tvItemTotal.setTextColor(itemView.context.resources.getColor(R.color.red))
+                    tvItemTotal.text = "Rp ${transaction.total}"
+                } else if (transaction.type == "pemasukan") {
+                    tvItemTotal.setTextColor(itemView.context.resources.getColor(R.color.blue))
+                    tvItemTotal.text = "Rp ${transaction.total}"
+                }
                 tvItemDescription.text = transaction.description
                 cvTransaction.setOnClickListener {
                     val intent = Intent(it.context, AddUpdateTransactionActivity::class.java)

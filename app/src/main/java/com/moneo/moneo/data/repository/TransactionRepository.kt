@@ -14,7 +14,9 @@ class TransactionRepository private constructor(
 ) {
     private val executorService: ExecutorService = Executors.newSingleThreadExecutor()
 
-    fun getAllTransaction(): LiveData<List<Transaction>> = transactionDao.getAllTransaction()
+    fun getAllTransaction(): LiveData<List<Transaction>> {
+        return transactionDao.getAllTransaction()
+    }
 
     fun insertTransaction(transaction: Transaction) {
         executorService.execute {
@@ -34,12 +36,8 @@ class TransactionRepository private constructor(
         }
     }
 
-    fun getAllRekeningForSpinner(): LiveData<List<Rekening>> = rekeningDao.getAllRekening()
-
-    fun setUpdateRekening(rekening: Rekening) {
-        executorService.execute {
-            rekeningDao.updateRekening(rekening)
-        }
+    fun getRekeningForTransaction(): LiveData<List<Rekening>> {
+        return rekeningDao.getAllRekening()
     }
 
     companion object {

@@ -9,13 +9,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.moneo.moneo.ViewModelFactory
-import com.moneo.moneo.adapter.RekeningAdapter
 import com.moneo.moneo.databinding.FragmentRekeningBinding
 
 class RekeningFragment : Fragment() {
 
     private var _binding: FragmentRekeningBinding? = null
     private val binding get() = _binding
+
+    private val viewModel: RekeningViewModel by viewModels {
+        ViewModelFactory.getInstance(requireActivity())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,11 +32,11 @@ class RekeningFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val factory: ViewModelFactory = ViewModelFactory.getInstance(requireActivity())
-        val viewModel: RekeningViewModel by viewModels {
-            factory
-        }
+        setListRekening()
+        setFabClick()
+    }
 
+    private fun setListRekening() {
         val rekeningAdapter = RekeningAdapter()
 
         viewModel.getAllRekening().observe(viewLifecycleOwner) { listRekening ->
@@ -46,11 +49,12 @@ class RekeningFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
             adapter = rekeningAdapter
         }
+    }
 
+    private fun setFabClick() {
         binding?.btnFab?.setOnClickListener {
             val intent = Intent(activity, AddUpdateRekeningActivity::class.java)
             startActivity(intent)
         }
-
     }
 }
