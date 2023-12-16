@@ -24,7 +24,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Rekening"
+                android:text="@string/rekening"
                 android:textColor="@color/white"
                 android:textAlignment="center"
                 android:textSize="18sp"
@@ -48,7 +48,9 @@
         android:layout_height="wrap_content"
         android:layout_margin="25dp"
         android:src="@drawable/ic_add"
+        app:backgroundTint="@color/color_primary"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="@string/fab_transformation_scrim_behavior" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

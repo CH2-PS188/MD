@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/navigationTransaksi"
+        android:title="@string/transaksi"
+        android:icon="@drawable/ic_wallet"/>
+    <item
+        android:id="@+id/navigationRekening"
+        android:title="@string/rekening"
+        android:icon="@drawable/ic_card"/>
+    <item
+        android:id="@+id/navigationRekap"
+        android:icon="@drawable/ic_baseline_bar_chart_24"
+        android:title="@string/navigation_rekap"
+        android:enabled="true"
+        app:itemIconTint="@color/color_textSecondary"/>
+    <item
+        android:id="@+id/navigationSetting"
+        android:icon="@drawable/ic_baseline_settings_24"
+        android:title="@string/navigation_setting"
+        android:enabled="true"
+        app:itemIconTint="@color/color_textSecondary"/>
+
+
+
+</menu>

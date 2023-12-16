@@ -1,47 +1,17 @@
 package com.moneo.moneo.data.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
-import com.moneo.moneo.data.local.transaction.Transaction
-import com.moneo.moneo.data.local.transaction.TransactionDao
-import com.moneo.moneo.data.network.retrofit.ApiService
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
+import androidx.lifecycle.liveData
+import com.moneo.moneo.data.remote.model.TransactionItem
+import com.moneo.moneo.data.remote.response.TransactionResponse
+import com.moneo.moneo.data.remote.retrofit.ApiService
+import com.moneo.moneo.data.result.Result
+import retrofit2.Response
 
-class TransactionRepository private constructor(
-    private val transactionDao: TransactionDao,
-    private val apiService: ApiService
-) {
-    private val executorService: ExecutorService = Executors.newSingleThreadExecutor()
+class TransactionRepository (private val apiService: ApiService) {
 
-    fun getAllTransaction(): LiveData<List<Transaction>> = transactionDao.getAllTransaction()
-
-    fun insertTransaction(transaction: Transaction) {
-        executorService.execute {
-            transactionDao.insertTransaction(transaction)
-        }
-    }
-
-    fun updateTransaction(transaction: Transaction) {
-        executorService.execute {
-            transactionDao.updateTransaction(transaction)
-        }
-    }
-
-    fun deleteTransaction(transaction: Transaction) {
-        executorService.execute {
-            transactionDao.deleteTransaction(transaction)
-        }
-    }
-
-    companion object {
-        @Volatile
-        private var INSTANCE: TransactionRepository? = null
-        fun getInstance(
-            transactionDao: TransactionDao,
-            apiService: ApiService
-        ): TransactionRepository =
-            INSTANCE ?: synchronized(this) {
-                INSTANCE ?: TransactionRepository(transactionDao, apiService)
-            }.also { INSTANCE = it }
+    suspend fun getTransactions(token: String, idAccount: String): Response<TransactionResponse> {
+        return apiService.getAllTransactions(token, idAccount)
     }
 }
