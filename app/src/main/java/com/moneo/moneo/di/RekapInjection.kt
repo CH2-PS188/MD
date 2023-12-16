@@ -10,6 +10,6 @@ object RekapInjection {
     fun provideRepository(context: Context): RekapRepository {
         val apiService = ApiConfig.getApiService()
 
-        return RekapRepository.getInstance(apiService)
+        return RekapRepository(apiService)
     }
 }

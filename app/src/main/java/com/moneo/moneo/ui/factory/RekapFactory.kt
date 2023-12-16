@@ -10,7 +10,11 @@ import com.moneo.moneo.ui.rekap.RekapViewModel
 class RekapFactory private constructor(private val rekapRepository: RekapRepository): ViewModelProvider.NewInstanceFactory() {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return RekapViewModel(rekapRepository) as T
+        if (modelClass.isAssignableFrom(RekapViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return RekapViewModel(rekapRepository) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
 
     companion object{

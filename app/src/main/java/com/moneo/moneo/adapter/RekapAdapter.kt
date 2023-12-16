@@ -1,29 +1,31 @@
 package com.moneo.moneo.adapter
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.moneo.moneo.data.remote.response.ListRekapItem
 import com.moneo.moneo.databinding.ItemRekapBinding
 
-class RekapAdapter : ListAdapter<ListRekapItem, RekapAdapter.ListViewHolder>(DIFF_CALLBACK) {
-
-    private val listRekap = ArrayList<ListRekapItem>()
-
+class RekapAdapter(private var listRekap: List<ListRekapItem>) :
+    RecyclerView.Adapter<RekapAdapter.ListViewHolder>() {
     inner class ListViewHolder(private val view: ItemRekapBinding) :
         RecyclerView.ViewHolder(view.root) {
+        @SuppressLint("SetTextI18n")
         fun bind(rekap: ListRekapItem) {
             Log.d("RekapAdapter", "Binding item: $rekap")
             with(view) {
+                tvPemasukan.text = "Pemasukan"
+                tvRataPemasukan.text = "rata-rata perhari"
+                tvPengeluaran.text = "Pengeluaran"
+                tvRataPengeluaran.text = "rata-rata perhari"
+                tvSelisih.text = "Selisih"
                 tvTanggal.text = rekap.date
-                tvAngkaPengeluaran.text = rekap.totalIncome
-                tvAngkaPemasukan.text = rekap.totalExpenses
+                tvAngkaPengeluaran.text = rekap.totalExpenses
+                tvAngkaPemasukan.text = rekap.totalIncome
                 tvAngkaSelisih.text = rekap.difference
-                tvAngkaRataPengeluaran.text = rekap.startDate
-                tvAngkaRataPemasukan.text = rekap.endDate
             }
         }
     }
@@ -34,20 +36,9 @@ class RekapAdapter : ListAdapter<ListRekapItem, RekapAdapter.ListViewHolder>(DIF
     }
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-        holder.bind(listRekap[position])
+        val rekap = listRekap[position]
+        holder.bind(rekap)
     }
     override fun getItemCount(): Int = listRekap.size
-
-    companion object{
-        val DIFF_CALLBACK: DiffUtil.ItemCallback<ListRekapItem> =
-            object : DiffUtil.ItemCallback<ListRekapItem>(){
-                override fun areItemsTheSame(oldItem: ListRekapItem, newItem: ListRekapItem): Boolean {
-                    return oldItem.date == newItem.date
-                }
-                override fun areContentsTheSame(oldItem: ListRekapItem, newItem: ListRekapItem): Boolean {
-                    return oldItem == newItem
-                }
-            }
-    }
 
 }

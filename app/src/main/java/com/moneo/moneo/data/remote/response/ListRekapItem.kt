@@ -22,5 +22,5 @@ data class ListRekapItem(
     val startDate: String,
 
     @field:SerializedName("Date")
-    val date: String
+    val date: String,
 ):Parcelable

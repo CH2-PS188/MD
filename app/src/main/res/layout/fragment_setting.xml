@@ -40,8 +40,9 @@
         android:id="@+id/card_notifications"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="15dp"
         android:layout_marginStart="15dp"
+        android:paddingVertical="10dp"
         android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@+id/appbar"
         app:layout_constraintStart_toStartOf="parent">
@@ -67,7 +68,7 @@
         android:layout_height="match_parent"
         android:layout_marginStart="15dp"
         android:gravity="center"
-        android:textSize="18sp"
+        android:textSize="16sp"
         android:textColor="@color/color_textPrimary"
         android:text="@string/pengingat" />
 
@@ -80,8 +81,9 @@
         android:id="@+id/card_thema"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="15dp"
         android:layout_marginStart="15dp"
+        android:paddingVertical="10dp"
         android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@+id/card_notifications"
         app:layout_constraintStart_toStartOf="parent">
@@ -107,7 +109,7 @@
             android:layout_height="match_parent"
             android:layout_marginStart="15dp"
             android:gravity="center"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textColor="@color/color_textPrimary"
             android:text="@string/thema" />
 
@@ -120,8 +122,9 @@
         android:id="@+id/card_bahasa"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="15dp"
         android:layout_marginStart="15dp"
+        android:paddingVertical="10dp"
         android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@+id/card_thema"
         app:layout_constraintStart_toStartOf="parent">
@@ -147,7 +150,7 @@
             android:layout_height="match_parent"
             android:layout_marginStart="15dp"
             android:gravity="center"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textColor="@color/color_textPrimary"
             android:text="@string/bahasa" />
 
@@ -160,8 +163,9 @@
         android:id="@+id/card_keluar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="15dp"
         android:layout_marginStart="15dp"
+        android:paddingVertical="10dp"
         android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@+id/card_bahasa"
         app:layout_constraintStart_toStartOf="parent">
@@ -187,7 +191,7 @@
             android:layout_height="match_parent"
             android:layout_marginStart="15dp"
             android:gravity="center"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textColor="@color/color_textPrimary"
             android:text="@string/keluar" />
 

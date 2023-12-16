@@ -2,11 +2,13 @@ package com.moneo.moneo.ui.rekap
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
@@ -38,42 +40,69 @@ class RekapFragment : Fragment() {
 
         val rekapFactory: RekapFactory = RekapFactory.getInstance(requireActivity())
         rekapVM = ViewModelProvider(this, rekapFactory)[RekapViewModel::class.java]
-
         firebaseAuth = FirebaseAuth.getInstance()
-        rekapAdapter= RekapAdapter()
+        rekapAdapter= RekapAdapter(emptyList())
+        binding?.rvRekap?. layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+        binding?.rvRekap?.adapter = rekapAdapter
 
-        binding?.rvRekap?.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = rekapAdapter
-            setHasFixedSize(true)
-        }
+//        val idAccount = "12345"
+//        val token = "12345"
 
-        val userId = firebaseAuth.currentUser?.uid
-        rekapVM.getAllLaporan(userId.toString()).observe(viewLifecycleOwner){ result ->
-            if (result != null){
-                when(result) {
-                    is Result.Loading -> {
-                        binding?.progressBar?.visibility = View.VISIBLE
-                        binding?.tvNoData?.visibility = View.GONE
-                    }
+        val idAccount = firebaseAuth.currentUser!!.uid
+        val token = firebaseAuth.currentUser!!.uid
 
-                    is Result.Success -> {
-                        binding?.progressBar?.visibility = View.GONE
-                        binding?.tvNoData?.visibility = View.GONE
-                        rekapAdapter.submitList(result.data.listRekap)
-                        rekapAdapter.notifyDataSetChanged()
-                        Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
-                    }
+        rekapVM.success.observe(viewLifecycleOwner, Observer{
+         rekapAdapter = it?.let { RekapAdapter(listOf(it.summary)) }!!
+         binding?.rvRekap?.adapter = rekapAdapter
+         binding?.rvRekap?.adapter?.notifyDataSetChanged()
+         Log.e("Rekap Fragment", "Succes: ${it.summary}")
+         binding?.rvRekap?.visibility = View.VISIBLE
+            binding?.progressBar?.visibility = View.GONE
+        })
 
-                    is Result.Error -> {
-                        binding?.progressBar?.visibility = View.GONE
-                        binding?.tvNoData?.visibility = View.VISIBLE
-                        Toast.makeText(context, "Error: ${result.error}", Toast.LENGTH_SHORT).show()
-                    }
+        rekapVM.error.observe(viewLifecycleOwner, Observer {
+            binding?.tvNoData?.visibility = View.VISIBLE
+            Log.e("Rekap Fragment", "Error: $it")
+            Toast.makeText(requireActivity(), "Error: $it", Toast.LENGTH_SHORT).show()
+        })
 
-                }
-            }
-        }
+        rekapVM.loading.observe(viewLifecycleOwner, Observer{
+            binding?.progressBar?.visibility = View.VISIBLE
+        })
+
+
+        rekapVM.getAllLaporan(idAccount, token)
+
+//         rekapVM.transactions.observe(viewLifecycleOwner, Observer {
+//         rekapAdapter = RekapAdapter(listOf(it.listRekap))
+//         binding?.rvRekap?.adapter = rekapAdapter
+//         binding?.rvRekap?.adapter?.notifyDataSetChanged()
+//         Log.e("Rekap Fragment", "Succes: ${it.listRekap}")
+//         })
+//
+//        val userId = firebaseAuth.currentUser!!.uid
+//        rekapVM.getAllLaporan(userId).observe(viewLifecycleOwner){ result ->
+//                when(result) {
+//                    is Result.Loading -> {
+//                        binding?.progressBar?.visibility = View.VISIBLE
+//                        binding?.tvNoData?.visibility = View.GONE
+//                    }
+//
+//                    is Result.Success -> {
+//                        binding?.progressBar?.visibility = View.GONE
+//                        binding?.tvNoData?.visibility = View.GONE
+//                        Log.e("Rekap Fragment", "Error: ${result.data.listRekap}")
+//                        Toast.makeText(context, "Success ${result.data.listRekap}", Toast.LENGTH_SHORT).show()
+//                    }
+//
+//                    is Result.Error -> {
+//                        binding?.progressBar?.visibility = View.GONE
+//                        binding?.tvNoData?.visibility = View.VISIBLE
+//                        Log.e("Rekap Fragment", "Error: ${result.error}")
+//                        Toast.makeText(context, "Error: ${result.error}", Toast.LENGTH_SHORT).show()
+//                    }
+//            }
+//        }
     }
 
     override fun onDestroy() {

@@ -5,28 +5,10 @@ import androidx.lifecycle.liveData
 import com.moneo.moneo.data.remote.response.RekapResponse
 import com.moneo.moneo.data.remote.retrofit.ApiService
 import com.moneo.moneo.data.result.Result
+import retrofit2.Response
 
 class RekapRepository (private val apiService: ApiService){
-    fun getAllLaporan(idAccount: String): LiveData<Result<RekapResponse>> = liveData {
-        emit(Result.Loading)
-        try {
-            val result = apiService.getAllLaporan(idAccount)
-            emit(Result.Success(result))
-        } catch (e: Exception) {
-            e.printStackTrace()
-            emit(Result.Error(e.message.toString()))
-        }
-    }
-
-
-    companion object {
-        @Volatile
-        private var INSTANCE: RekapRepository? = null
-        fun getInstance(
-            apiService: ApiService
-        ): RekapRepository =
-            INSTANCE ?: synchronized(this) {
-                INSTANCE ?: RekapRepository(apiService)
-            }.also { INSTANCE = it }
+    suspend fun getAllLaporan(token: String, idAccount: String): Response<RekapResponse> {
+        return apiService.getAllLaporan(token, idAccount)
     }
 }
