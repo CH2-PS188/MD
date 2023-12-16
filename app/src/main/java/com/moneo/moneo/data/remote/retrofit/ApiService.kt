@@ -1,7 +1,7 @@
 package com.moneo.moneo.data.remote.retrofit
 
 import com.moneo.moneo.data.remote.model.TransactionItem
-import com.moneo.moneo.data.remote.response.AccountResponse
+import com.moneo.moneo.data.remote.response.RekeningResponse
 import com.moneo.moneo.data.remote.response.RekapResponse
 import com.moneo.moneo.data.remote.response.TransactionResponse
 import retrofit2.Response
@@ -40,10 +40,10 @@ interface ApiService {
     // Rekening
 
     @GET("/{id_account}/rekening")
-    suspend fun getAllAccounts(
-        @Path("id_account")
-        idAccount: String
-    ): AccountResponse
+    suspend fun getAllRekening(
+        @Path("id_account") idAccount: String,
+        @Header("Authorization") token: String,
+    ): Response<RekeningResponse>
 
     //Laporan
     @GET("{id_account}/laporan")
