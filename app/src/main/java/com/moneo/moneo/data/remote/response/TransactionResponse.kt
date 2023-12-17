@@ -5,5 +5,6 @@ import com.moneo.moneo.data.remote.model.TransactionItem
 
 data class TransactionResponse(
 
+	@field:SerializedName("data")
 	val data: List<TransactionItem>
 )

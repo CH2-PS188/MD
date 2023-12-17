@@ -10,11 +10,11 @@ data class TransactionItem(
     @field:SerializedName("date")
     val date: String,
 
+    @field:SerializedName("account")
+    val account: String,
+
     @field:SerializedName("total")
     val total: String,
-
-    @field:SerializedName("description")
-    val description: String,
 
     @field:SerializedName("title")
     val title: String,
@@ -22,6 +22,7 @@ data class TransactionItem(
     @field:SerializedName("category")
     val category: String,
 
-    @field:SerializedName("account")
-    val account: String
+    @field:SerializedName("description")
+    val description: String,
+
 ): Parcelable

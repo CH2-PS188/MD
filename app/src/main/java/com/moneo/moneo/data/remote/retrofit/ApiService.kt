@@ -22,20 +22,21 @@ interface ApiService {
         @Path("id_account") idAccount: String
     ): Response<TransactionResponse>
 
-    @Headers("Content-Type: application/json")
+    @Headers("Accept: application/json", "Content-type: application/json")
     @POST("/{id_account}/transaksi/pemasukan")
-     fun insertTransactionPemasukan(
+     suspend fun insertTransactionPemasukan(
         @Path("id_account") idAccount: String,
         @Header("Authorization") token: String,
         @Body request: TransactionItem
-    ): TransactionResponse
-    @Headers("Content-Type: application/json")
+    ): Response<TransactionResponse>
+
+    @Headers("Accept: application/json", "Content-type: application/json")
     @POST("/{id_account}/transaksi/pengeluaran")
-     fun insertTransactionPengeluaran(
+     suspend fun insertTransactionPengeluaran(
         @Path("id_account") idAccount: String,
         @Header("Authorization") token: String,
         @Body request: TransactionItem
-    ): TransactionResponse
+    ): Response<TransactionResponse>
 
 
     // Rekening
@@ -60,6 +61,4 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Path("id_account") idAccount: String
     ): Response<RekapResponse>
-
-
 }

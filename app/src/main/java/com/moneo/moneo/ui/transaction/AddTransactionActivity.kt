@@ -1,21 +1,24 @@
 package com.moneo.moneo.ui.transaction
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.moneo.moneo.R
 import com.moneo.moneo.data.remote.model.TransactionItem
-import com.moneo.moneo.data.result.Result
 import com.moneo.moneo.databinding.ActivityAddTransactionBinding
-import com.moneo.moneo.ui.factory.AddTransactionFactory
+import com.moneo.moneo.ui.factory.TransactionFactory
 import com.moneo.moneo.utils.DatePickerFragment
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+
+
 
 @Suppress("DEPRECATION")
 class AddTransactionActivity : AppCompatActivity(), DatePickerFragment.DialogDateListener {
@@ -25,12 +28,10 @@ class AddTransactionActivity : AppCompatActivity(), DatePickerFragment.DialogDat
     private lateinit var binding: ActivityAddTransactionBinding
 
     private lateinit var firebaseAuth: FirebaseAuth
-    private  lateinit var viewModel: AddTransactionViewModel
-
-
-    private var isEdit = false
+    private  lateinit var addTransactionVM: AddTransactionViewModel
 
     private var jenisTransaksi: String? = null
+    private var isEdit = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,12 +40,11 @@ class AddTransactionActivity : AppCompatActivity(), DatePickerFragment.DialogDat
 
         supportActionBar?.hide()
 
-        viewModel = ViewModelProvider (this)[AddTransactionViewModel::class.java]
+        val factory: TransactionFactory = TransactionFactory.getInstance(this)
+        addTransactionVM = ViewModelProvider(this, factory)[AddTransactionViewModel::class.java]
 
 
         firebaseAuth = FirebaseAuth.getInstance()
-        val idAccount = firebaseAuth.currentUser!!.uid
-        val token = firebaseAuth.currentUser!!.uid
 
 
         binding.btnBack.setOnClickListener {
@@ -105,19 +105,18 @@ class AddTransactionActivity : AppCompatActivity(), DatePickerFragment.DialogDat
 
                 binding.btnSave.setOnClickListener {
                     val date = edtDate.text.toString()
-                    val rekening = edtRekening.text.toString()
+                    val account = edtRekening.text.toString()
                     val total = edtTotal.text.toString()
                     val title = edtTitle.text.toString()
                     val category = edtCategory.text.toString()
                     val description = edtDescription.text.toString()
-                    val request = TransactionItem(date, rekening, total, title, category, description)
+
+                    val idAccount = firebaseAuth.currentUser!!.uid
+                    val token = firebaseAuth.currentUser!!.uid
+                    val request = TransactionItem(date, account, total, title, category, description)
                     when {
                         date.isEmpty() -> {
                             binding.edtDate.error = "Field can not be blank"
-                        }
-
-                        rekening.isEmpty() -> {
-                            binding.edtRekening.error = "Field can not be blank"
                         }
 
                         total.isEmpty() -> {
@@ -138,8 +137,12 @@ class AddTransactionActivity : AppCompatActivity(), DatePickerFragment.DialogDat
 
                         else -> {
                             if (jenisTransaksi == "pemasukan") {
+                                addTransactionVM.insertTransactionPemasukan(idAccount, token, request)
+                                Log.e("Add Pemasukan", "Success: ${request.title} ${request.date} ${request.category} ${request.total} ${request.description}")
                                 Toast.makeText(this@AddTransactionActivity, "Pemasukan", Toast.LENGTH_SHORT).show()
                             } else if (jenisTransaksi == "pengeluaran") {
+                                addTransactionVM.insertTransactionPengeluaran(idAccount, token, request)
+                                Log.e("Add Pengeluaran", "Success: ${request.title} ${request.date} ${request.category} ${request.total} ${request.description}")
                                 Toast.makeText(this@AddTransactionActivity, "Pengeluaran", Toast.LENGTH_SHORT).show()
                             }
                             finish()
@@ -148,170 +151,24 @@ class AddTransactionActivity : AppCompatActivity(), DatePickerFragment.DialogDat
                 }
             }
         }
-    }
 
-//        binding.apply {
-//            toggleGroup.addOnButtonCheckedListener { group, _, _ ->
-//                jenisTransaksi = when (group.checkedButtonId) {
-//                    R.id.btn_income -> {
-//                        Toast.makeText(
-//                            this@AddTransactionActivity,
-//                            "${btnIncome.text}",
-//                            Toast.LENGTH_SHORT
-//                        ).show()
-//                        "pemasukan"
-//                    }
-//
-//                    R.id.btn_expense -> {
-//                        Toast.makeText(
-//                            this@AddTransactionActivity,
-//                            "${btnExpense.text}",
-//                            Toast.LENGTH_SHORT
-//                        ).show()
-//                        "pengeluaran"
-//                    }
-//
-//                    else -> null
-//                }
-//            }
-//
-//            binding.apply {
-//                toggleGroup.addOnButtonCheckedListener { _, checkedId, isChecked ->
-//                    if (isChecked) {
-//                        jenisTransaksi = when (checkedId) {
-//                            R.id.btn_income -> {
-//                                Toast.makeText(
-//                                    this@AddTransactionActivity,
-//                                    "Income selected",
-//                                    Toast.LENGTH_SHORT
-//                                ).show()
-//                                "pemasukan"
-//                            }
-//
-//                            R.id.btn_expense -> {
-//                                Toast.makeText(
-//                                    this@AddTransactionActivity,
-//                                    "Expense selected",
-//                                    Toast.LENGTH_SHORT
-//                                ).show()
-//                                "pengeluaran"
-//                            }
-//
-//                            else -> null
-//                        }
-//                    }
-//                }
-//
-//                binding.btnSave.setOnClickListener {
-//                    val date = edtDate.text.toString()
-//                    val rekening = edtRekening.text.toString()
-//                    val total = edtTotal.text.toString()
-//                    val title = edtTitle.text.toString()
-//                    val category = edtCategory.text.toString()
-//                    val description = edtDescription.text.toString()
-//                    val request = TransactionItem(date, rekening, total, title, category, description)
-//
-//
-//                    when {
-//                        date.isEmpty() -> {
-//                            binding.edtDate.error = "Field can not be blank"
-//                        }
-//
-//                        rekening.isEmpty() -> {
-//                            binding.edtRekening.error = "Field can not be blank"
-//                        }
-//
-//                        total.isEmpty() -> {
-//                            binding.edtTotal.error = "Field can not be blank"
-//                        }
-//
-//                        title.isEmpty() -> {
-//                            binding.edtTitle.error = "Field can not be blank"
-//                        }
-//
-//                        category.isEmpty() -> {
-//                            binding.edtCategory.error = "Field can not be blank"
-//                        }
-//
-//                        description.isEmpty() -> {
-//                            binding.edtDescription.error = "Field can not be blank"
-//                        }
-//
-//                        else -> {
-//                            if (jenisTransaksi == "pemasukan") {
-//                                viewModel.insertTransactionPemasukan(idAccount, token, request)
-//                                    .observe(this@AddTransactionActivity) { result ->
-//                                        if (result != null) {
-//                                            when (result) {
-//                                                is Result.Loading -> {
-//                                                    binding.progressBar.visibility = View.VISIBLE
-//                                                }
-//
-//                                                is Result.Success -> {
-//                                                    binding.progressBar.visibility = View.GONE
-////                                                    result.data
-//                                                    Toast.makeText(
-//                                                        this@AddTransactionActivity,
-//                                                        "Success",
-//                                                        Toast.LENGTH_SHORT
-//                                                    )
-//                                                        .show()
-//                                                }
-//
-//                                                is Result.Error -> {
-//                                                    binding.progressBar.visibility = View.GONE
-//                                                    Toast.makeText(
-//                                                        this@AddTransactionActivity,
-//                                                        "Error: ${result.error}",
-//                                                        Toast.LENGTH_SHORT
-//                                                    ).show()
-//                                                }
-//
-//                                            }
-//                                        }
-//                                    }
-//                            } else if (jenisTransaksi == "pengeluaran") {
-//                                viewModel.insertTransactionPengeluaran(idAccount, token, request)
-//                                    .observe(this@AddTransactionActivity) { result ->
-//                                        if (result != null) {
-//                                            when (result) {
-//                                                is Result.Loading -> {
-//                                                    binding.progressBar.visibility = View.VISIBLE
-//                                                }
-//
-//                                                is Result.Success -> {
-//                                                    binding.progressBar.visibility = View.GONE
-////                                                    result.data.listTransaction
-//                                                    Toast.makeText(
-//                                                        this@AddTransactionActivity,
-//                                                        "Success",
-//                                                        Toast.LENGTH_SHORT
-//                                                    )
-//                                                        .show()
-//                                                }
-//
-//                                                is Result.Error -> {
-//                                                    binding.progressBar.visibility = View.GONE
-//                                                    Toast.makeText(
-//                                                        this@AddTransactionActivity,
-//                                                        "Error: ${result.error}",
-//                                                        Toast.LENGTH_SHORT
-//                                                    ).show()
-//                                                }
-//
-//                                            }
-//                                        }
-//
-//                                        Toast.makeText(this@AddTransactionActivity, "Transaksi Berhasil di buat", Toast.LENGTH_SHORT).show()
-//                                }
-//                            }
-//                            finish()
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
+        addTransactionVM.success.observe(this, Observer {
+            Log.e("Add Transaction", "Succes: $it")
+            finish()
+            binding.progressBar.visibility = View.GONE
+        })
+
+        addTransactionVM.loading.observe(this, Observer {
+            binding.progressBar.visibility = if (it) View.VISIBLE else View.GONE
+        })
+
+        addTransactionVM.error.observe(this, Observer {
+            Log.e("Add Transaction", "Error: $it")
+            Toast.makeText(this, "Error: $it", Toast.LENGTH_SHORT).show()
+            binding.progressBar.visibility = View.GONE
+        })
+
+    }
 
 
     fun showDatePicker(view: View) {
@@ -322,7 +179,7 @@ class AddTransactionActivity : AppCompatActivity(), DatePickerFragment.DialogDat
     override fun onDialogDateSet(tag: String?, year: Int, month: Int, dayOfMonth: Int) {
         val calendar = Calendar.getInstance()
         calendar.set(year, month, dayOfMonth)
-        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val dateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
         findViewById<TextView>(R.id.edt_date).text = dateFormat.format(calendar.time)
 
         dueDateMillis = calendar.timeInMillis

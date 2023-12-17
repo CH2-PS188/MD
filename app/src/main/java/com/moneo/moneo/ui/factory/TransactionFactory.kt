@@ -5,17 +5,26 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.moneo.moneo.data.repository.TransactionRepository
 import com.moneo.moneo.di.TransactionInjection
+import com.moneo.moneo.ui.transaction.AddTransactionViewModel
 import com.moneo.moneo.ui.transaction.TransactionViewModel
 
 class TransactionFactory private constructor(private val transactionRepository: TransactionRepository): ViewModelProvider.NewInstanceFactory(){
 
+    @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(TransactionViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return TransactionViewModel(transactionRepository) as T
+        return when{
+            modelClass.isAssignableFrom(TransactionViewModel::class.java) -> {
+                TransactionViewModel(transactionRepository) as T
+            }
+            modelClass.isAssignableFrom(AddTransactionViewModel::class.java) -> {
+                AddTransactionViewModel(transactionRepository) as T
+            }
+            else -> {
+                throw IllegalArgumentException("Unknown ViewModel class")
+            }
         }
-        throw IllegalArgumentException("Unknown ViewModel class")
     }
+
 
     companion object {
         @Volatile
