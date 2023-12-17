@@ -46,5 +46,4 @@ class AccountViewModel(private val rekeningRepository: RekeningRepository) : Vie
             }
         }
     }
-
 }

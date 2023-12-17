@@ -9,15 +9,31 @@ import com.moneo.moneo.di.RekapInjection
 import com.moneo.moneo.di.RekeningInjection
 import com.moneo.moneo.ui.rekap.RekapViewModel
 import com.moneo.moneo.ui.rekening.AccountViewModel
+import com.moneo.moneo.ui.rekening.AddUpdateAccountViewModel
 
 class RekeningFactory private constructor(private val rekeningRepository: RekeningRepository): ViewModelProvider.NewInstanceFactory(){
 
+//    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+//        if (modelClass.isAssignableFrom(AccountViewModel::class.java)) {
+//            @Suppress("UNCHECKED_CAST")
+//            return AccountViewModel(rekeningRepository) as T
+//        }
+//        throw IllegalArgumentException("Unknown ViewModel class")
+//    }
+
+    @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(AccountViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return AccountViewModel(rekeningRepository) as T
+        return when{
+        modelClass.isAssignableFrom(AccountViewModel::class.java) -> {
+            AccountViewModel(rekeningRepository) as T
+         }
+         modelClass.isAssignableFrom(AddUpdateAccountViewModel::class.java) -> {
+             AddUpdateAccountViewModel(rekeningRepository) as T
+         }
+            else -> {
+                throw IllegalArgumentException("Unknown ViewModel class")
+            }
         }
-        throw IllegalArgumentException("Unknown ViewModel class")
     }
 
     companion object{

@@ -46,7 +46,7 @@ class AccountFragment : Fragment() {
 
         firebaseAuth = FirebaseAuth.getInstance()
 
-        rekeningAdapter = RekeningAdapter(emptyList())
+        rekeningAdapter = RekeningAdapter()
         binding?.rvAccounts?.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
         binding?.rvAccounts?.adapter = rekeningAdapter
 
@@ -55,17 +55,16 @@ class AccountFragment : Fragment() {
         val token = firebaseAuth.currentUser!!.uid
 
         rekeningVM.success.observe(viewLifecycleOwner, Observer {
-            rekeningAdapter = RekeningAdapter(it.rekenings)
+            rekeningAdapter.submitList(it.rekenings)
             binding?.tvAccountBalance?.text = it.totalSaldo
             binding?.rvAccounts?.adapter = rekeningAdapter
-            binding?.rvAccounts?.adapter?.notifyDataSetChanged()
-            Log.e("Rekap Fragment", "Succes: ${it.rekenings}")
+            Log.e("Rekening Fragment", "Succes: ${it.rekenings}")
             binding?.rvAccounts?.visibility = View.VISIBLE
             binding?.progressBar?.visibility = View.GONE
         })
 
         rekeningVM.error.observe(viewLifecycleOwner, Observer {
-            Log.e("Rekap Fragment", "Error: $it")
+            Log.e("Rekening Fragment", "Error: $it")
             Toast.makeText(requireActivity(), "Error: $it", Toast.LENGTH_SHORT).show()
         })
 
@@ -75,7 +74,7 @@ class AccountFragment : Fragment() {
 
         rekeningVM.getAllRekening(idAccount, token)
         binding?.btnFab?.setOnClickListener {
-            val intent = Intent(activity, AddTransactionActivity::class.java)
+            val intent = Intent(activity, AddUpdateAccountActivity::class.java)
             startActivity(intent)
         }
     }

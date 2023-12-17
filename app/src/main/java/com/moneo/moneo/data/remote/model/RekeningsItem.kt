@@ -7,11 +7,11 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class RekeningsItem(
 
-    @field:SerializedName("id_account")
-    val idAccount: String,
-
-    @field:SerializedName("id")
-    val id: Int,
+//    @field:SerializedName("id_account")
+//    val idAccount: String,
+//
+//    @field:SerializedName("id")
+//    val id: Int,
 
     @field:SerializedName("saldo")
     val saldo: String,

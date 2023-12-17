@@ -1,5 +1,6 @@
 package com.moneo.moneo.data.remote.retrofit
 
+import com.moneo.moneo.data.remote.model.RekeningsItem
 import com.moneo.moneo.data.remote.model.TransactionItem
 import com.moneo.moneo.data.remote.response.RekeningResponse
 import com.moneo.moneo.data.remote.response.RekapResponse
@@ -44,6 +45,14 @@ interface ApiService {
         @Path("id_account") idAccount: String,
         @Header("Authorization") token: String,
     ): Response<RekeningResponse>
+
+    @POST("/{id_account}/rekening")
+    suspend fun insertRekening(
+        @Path("id_account") idAccount: String,
+        @Header("Authorization") token: String,
+        @Body request: RekeningsItem
+    ): Response<RekeningResponse>
+
 
     //Laporan
     @GET("{id_account}/laporan")

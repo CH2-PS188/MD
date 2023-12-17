@@ -40,6 +40,7 @@
     <string name="message_validation">Enter your %1$s</string>
     <string name="login_error">Cannot Login, please check again!</string>
     <string name="signup_error">Cannot Signup, please check again!</string>
+    <string name="rekening_error">Cannot Add Rekening, please check again!</string>
     <string name="logout">Logout</string>
 
     <string name="transaksi">Transaksi</string>
