@@ -9,4 +9,9 @@
     <color name="whiteblue">#ECEEFF</color>
     <color name="blue_link">#0000EE</color>
     <color name="red">#FF0033</color>
+
+    <color name="color_primary">#2196F3</color>
+    <color name="color_textPrimary">#262626</color>
+    <color name="color_textSecondary">#AFAFAF</color>
+    <color name="color_green">#45B497</color>
 </resources>

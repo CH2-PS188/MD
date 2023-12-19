@@ -1,6 +1,7 @@
 package com.moneo.moneo.ui.transaction
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -10,10 +11,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
+import com.google.firebase.auth.FirebaseAuth
 import com.moneo.moneo.R
 import com.moneo.moneo.ViewModelFactory
 import com.moneo.moneo.data.local.rekening.Rekening
 import com.moneo.moneo.data.local.transaction.Transaction
+import com.moneo.moneo.data.remote.response.toDataItem
 import com.moneo.moneo.databinding.ActivityAddUpdateTransactionBinding
 import com.moneo.moneo.utils.DatePickerFragment
 import com.moneo.moneo.utils.TimePickerFragment
@@ -39,10 +42,14 @@ class AddUpdateTransactionActivity : AppCompatActivity(), DatePickerFragment.Dia
 
     private var jenisTransaksi: String? = null
 
+    private lateinit var firebaseAuth: FirebaseAuth
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddUpdateTransactionBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        firebaseAuth = FirebaseAuth.getInstance()
 
         transaction = intent.getParcelableExtra(EXTRA_TRANSACTION)
         if (transaction != null) {
@@ -76,7 +83,7 @@ class AddUpdateTransactionActivity : AppCompatActivity(), DatePickerFragment.Dia
                             } else {
                                 toggleGroup.check(R.id.btn_expense)
                             }
-                            val parts = transaction.date?.split(" ")
+                            val parts = transaction.date?.split("T", "Z")
                             edtDate.setText(parts?.get(0))
                             edtTime.setText(parts?.get(1))
                             val rekeningIndex = findRekeningIndexInList(listRekening, transaction.rekening)
@@ -100,7 +107,7 @@ class AddUpdateTransactionActivity : AppCompatActivity(), DatePickerFragment.Dia
         showDatePicker()
         showTimePicker()
         saveTransaction()
-        deleteTransaction()
+        deleteTransaction(transaction as Transaction)
     }
 
     private fun saveTransaction() {
@@ -119,26 +126,26 @@ class AddUpdateTransactionActivity : AppCompatActivity(), DatePickerFragment.Dia
                 } else {
                     "pengeluaran"
                 }
-                lifecycleScope.launch(Dispatchers.IO) {
-                    transaction?.apply {
-                        this.date = "$date $time"
-                        this.rekening = rekening
-                        this.total = total.toInt()
-                        this.title = title
-                        this.category = category
-                        this.description = description
-                        this.type = jenisTransaksi ?: "pengeluaran"
-                    }
+                val idAccount = firebaseAuth.currentUser!!.uid
+                val token = firebaseAuth.currentUser!!.uid
+                transaction?.apply {
+                    this.date = convertToISO8601Format(date, time)
+                    this.idAccount = idAccount
+                    this.rekening = rekening
+                    this.total = total
+                    this.title = title
+                    this.category = category
+                    this.description = description
+                    this.type = jenisTransaksi ?: "pengeluaran"
+                }
+                val transactionItem = transaction?.toDataItem()
+                if (transactionItem != null) {
                     if (isEdit) {
-                        viewModel.updateTransaction(transaction as Transaction)
-                        withContext(Dispatchers.Main) {
-                            Toast.makeText(this@AddUpdateTransactionActivity, "${transaction?.title} berhasil diubah!", Toast.LENGTH_SHORT).show()
-                        }
+                        viewModel.updateTransaction(idAccount, token, transactionItem)
+                        Toast.makeText(this@AddUpdateTransactionActivity, "${transaction?.title} berhasil diubah!", Toast.LENGTH_SHORT).show()
                     } else {
-                        viewModel.insertTransaction(transaction as Transaction)
-                        withContext(Dispatchers.Main) {
-                            Toast.makeText(this@AddUpdateTransactionActivity, "${transaction?.title} berhasil dibuat!", Toast.LENGTH_SHORT).show()
-                        }
+                        viewModel.insertTransaction(idAccount, token, transactionItem)
+                        Toast.makeText(this@AddUpdateTransactionActivity, "${transaction?.title} berhasil dibuat!", Toast.LENGTH_SHORT).show()
                     }
                 }
                 finish()
@@ -176,9 +183,11 @@ class AddUpdateTransactionActivity : AppCompatActivity(), DatePickerFragment.Dia
         }
     }
 
-    private fun deleteTransaction() {
+    private fun deleteTransaction(transaction: Transaction) {
         binding.btnDelete.setOnClickListener {
-            viewModel.deleteTransaction(transaction as Transaction)
+            val idAccount = firebaseAuth.currentUser!!.uid
+            val token = firebaseAuth.currentUser!!.uid
+            viewModel.deleteTransaction(idAccount, token, transaction)
             Toast.makeText(this@AddUpdateTransactionActivity, "${transaction?.title} berhasil dihapus!", Toast.LENGTH_SHORT).show()
             finish()
         }
@@ -188,6 +197,14 @@ class AddUpdateTransactionActivity : AppCompatActivity(), DatePickerFragment.Dia
         binding.btnBack.setOnClickListener {
             finish()
         }
+    }
+
+    private fun convertToISO8601Format(date: String, time: String): String {
+        val isoFormat = SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.getDefault())
+        val dateTimeString = "$date $time"
+        val dateTime = isoFormat.parse(dateTimeString)
+        isoFormat.applyPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+        return isoFormat.format(dateTime)
     }
 
     private fun showDatePicker() {
@@ -200,7 +217,7 @@ class AddUpdateTransactionActivity : AppCompatActivity(), DatePickerFragment.Dia
     override fun onDialogDateSet(tag: String?, year: Int, month: Int, dayOfMonth: Int) {
         val calendar = Calendar.getInstance()
         calendar.set(year, month, dayOfMonth)
-        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val dateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
         binding.edtDate.setText(dateFormat.format(calendar.time))
         dueDateMillis = calendar.timeInMillis
     }

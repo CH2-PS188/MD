@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Moneo</string>
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="navigation_transaction">Transaksi</string>
@@ -17,6 +18,70 @@
     <string name="back">Back</string>
     <string name="edit_transaction">Edit Transaksi</string>
     <string name="tambah_transaction">Tambah Transaksi</string>
-    <string name="pemasukan">Pemasukan</string>
+
+    <string name="onBoarding">Selamat Datang di Moneo</string>
+    <string name="onBoarding_desc">Teman cerdasmu dalam mengelola keuangan pribadi untuk meraih kendali atas keuanganmu dan bergerak menuju kebebasan finansial.</string>
+
+    <string name="login">Masuk</string>
+    <string name="regis">Daftar</string>
+
+    <string name="username">Username</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+
+    <string name="welcome_back">Selamat Datang Kembali</string>
+    <string name="have_account">Sudah punya akun</string>
+    <string name="create_new_account">Buat akun baru</string>
+
+    <string name="txt_create_new_account">Buat akun "\n"baru</string>
+
+    <string name="invalid_email">Format email is invalid!</string>
+    <string name="min_length_char">Minimal Length %1$d characters</string>
+    <string name="message_validation">Enter your %1$s</string>
+    <string name="login_error">Cannot Login, please check again!</string>
+    <string name="signup_error">Cannot Signup, please check again!</string>
+    <string name="rekening_error">Cannot Add Rekening, please check again!</string>
+    <string name="logout">Logout</string>
+
+    <string name="transaksi">Transaksi</string>
+    <string name="rekening">Rekening</string>
+    <string name="setting">Setting</string>
+    <string name="rekap">Rekap</string>
+    <string name="detail_rekap">Detail Rekap</string>
+    <string name="no_data">Tidak ada Data</string>
+
+
+    <string name="tanggal">01 Nov 2023 – 30 Nov 2023</string>
     <string name="pengeluaran">Pengeluaran</string>
+    <string name="pemasukan">Pemasukan</string>
+    <string name="selisih">Selisih</string>
+    <string name="rata_rata">rata-rata perhari</string>
+
+
+    <string name="angka_pengeluaran">2.000.000</string>
+    <string name="angka_pemasukan">6.000.000</string>
+    <string name="angka_selisih">4.000.000</string>
+    <string name="angka_rata">192.548</string>
+
+    <string name="belanja">Belanja Bulanan</string>
+    <string name="gaji_bulanan">Gaji Bulanan</string>
+
+    <string name="navigation_transaksi">Transaksi</string>
+    <string name="navigation_rekening">Rekening</string>
+    <string name="navigation_setting">Setting</string>
+    <string name="navigation_rekap">Rekap</string>
+    <string name="tambah_transaksi">Tambah Transaksi</string>
+
+    <string name="pengingat">Pengingat</string>
+    <string name="thema">Thema</string>
+    <string name="bahasa">Bahasa</string>
+    <string name="keluar">Keluar</string>
+    <string name="jumlah">Jumlah</string>
+    <string name="judul">Judul</string>
+    <string name="kategori">Kategori</string>
+    <string name="keterangan">Keterangan</string>
+    <string name="simpan">Simpan</string>
+    <string name="total">Rp 100.000.000</string>
+    <string name="nama_rekening">Nama Rekening</string>
+    <string name="total_saldo">Total Saldo</string>
 </resources>

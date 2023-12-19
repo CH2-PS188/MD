@@ -2,13 +2,17 @@ package com.moneo.moneo.ui.rekening
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.FirebaseAuth
 import com.moneo.moneo.ViewModelFactory
+import com.moneo.moneo.data.result.Result
 import com.moneo.moneo.databinding.FragmentRekeningBinding
 
 class RekeningFragment : Fragment() {
@@ -19,6 +23,8 @@ class RekeningFragment : Fragment() {
     private val viewModel: RekeningViewModel by viewModels {
         ViewModelFactory.getInstance(requireActivity())
     }
+
+    private lateinit var firebaseAuth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,11 +43,37 @@ class RekeningFragment : Fragment() {
     }
 
     private fun setListRekening() {
+
+        firebaseAuth = FirebaseAuth.getInstance()
+
+        val idAccount = firebaseAuth.currentUser!!.uid
+        val token = firebaseAuth.currentUser!!.uid
+
         val rekeningAdapter = RekeningAdapter()
 
-        viewModel.getAllRekening().observe(viewLifecycleOwner) { listRekening ->
-            if (listRekening != null) {
-                rekeningAdapter.submitList(listRekening)
+        viewModel.getAllRekening(idAccount, token)
+        viewModel.getRekeningResult()?.observe(viewLifecycleOwner) { result ->
+            if (result != null) {
+                when (result) {
+                    is Result.Loading -> {
+                        binding?.progressBar?.visibility = View.VISIBLE
+                    }
+                    is Result.Success -> {
+                        binding?.progressBar?.visibility = View.GONE
+                        val listRekening = result.data
+                        rekeningAdapter.submitList(listRekening)
+                        binding?.rvRekening?.adapter = rekeningAdapter
+                        Log.d("REKENING-DATA", "$listRekening")
+                    }
+                    is Result.Error -> {
+                        binding?.progressBar?.visibility = View.GONE
+                        Toast.makeText(
+                            context,
+                            "Terjadi kesalahan" + result.error,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
             }
         }
 

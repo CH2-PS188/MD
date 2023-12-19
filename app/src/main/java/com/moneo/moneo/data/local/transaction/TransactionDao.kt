@@ -14,8 +14,11 @@ interface TransactionDao {
     @Query("SELECT * FROM `transaction` ORDER BY date DESC")
     fun getAllTransaction(): LiveData<List<Transaction>>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertTransaction(transaction: Transaction)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertTransaction(transaction: List<Transaction>)
+
+    @Insert
+    fun createTransaction(transaction: Transaction)
 
     @Update
     fun updateTransaction(transaction: Transaction)

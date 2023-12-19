@@ -1,14 +1,18 @@
 package com.moneo.moneo.ui.transaction
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.moneo.moneo.data.local.rekening.Rekening
 import com.moneo.moneo.data.local.transaction.Transaction
+import com.moneo.moneo.data.remote.response.DataItem
+import com.moneo.moneo.data.remote.response.RekeningsItem
 import com.moneo.moneo.data.repository.TransactionRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class AddUpdateTransactionViewModel(private val transactionRepository: TransactionRepository) : ViewModel(){
 
@@ -21,21 +25,15 @@ class AddUpdateTransactionViewModel(private val transactionRepository: Transacti
         }
     }
 
-    fun insertTransaction(transaction: Transaction) {
-        viewModelScope.launch(Dispatchers.IO) {
-            transactionRepository.insertTransaction(transaction)
-        }
+    fun insertTransaction(idAccount: String, token: String, transaction: DataItem) {
+        transactionRepository.insertTransaction(idAccount, token, transaction)
     }
 
-    fun updateTransaction(transaction: Transaction) {
-        viewModelScope.launch(Dispatchers.IO) {
-            transactionRepository.updateTransaction(transaction)
-        }
+    fun updateTransaction(idAccount: String, token: String, transaction: DataItem) {
+        transactionRepository.updateTransaction(idAccount, token, transaction)
     }
 
-    fun deleteTransaction(transaction: Transaction) {
-        viewModelScope.launch(Dispatchers.IO) {
-            transactionRepository.deleteTransaction(transaction)
-        }
+    fun deleteTransaction(idAccount: String, token: String, transaction: Transaction) {
+        transactionRepository.deleteTransaction(idAccount, token, transaction)
     }
 }

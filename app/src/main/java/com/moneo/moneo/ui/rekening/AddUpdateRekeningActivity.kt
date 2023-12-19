@@ -2,12 +2,15 @@ package com.moneo.moneo.ui.rekening
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import com.google.firebase.auth.FirebaseAuth
 import com.moneo.moneo.R
 import com.moneo.moneo.ViewModelFactory
 import com.moneo.moneo.data.local.rekening.Rekening
+import com.moneo.moneo.data.remote.response.toRekeningsItem
 import com.moneo.moneo.databinding.ActivityAddUpdateRekeningBinding
 
 class AddUpdateRekeningActivity : AppCompatActivity() {
@@ -21,10 +24,14 @@ class AddUpdateRekeningActivity : AppCompatActivity() {
         ViewModelFactory.getInstance(this)
     }
 
+    private lateinit var firebaseAuth: FirebaseAuth
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddUpdateRekeningBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        firebaseAuth = FirebaseAuth.getInstance()
 
         rekening = intent.getParcelableExtra(EXTRA_ACCOUNT)
         if (rekening != null) {
@@ -75,16 +82,22 @@ class AddUpdateRekeningActivity : AppCompatActivity() {
                         binding.edtBalance.error = "Field can not be blank"
                     }
                     else -> {
+                        val idAccount = firebaseAuth.currentUser!!.uid
+                        val token = firebaseAuth.currentUser!!.uid
                         rekening.let { rekening ->
+                            rekening?.idAccount = idAccount
                             rekening?.name = name
                             rekening?.balance = balance.toInt()
                         }
-                        if (isEdit) {
-                            viewModel.updateRekening(rekening as Rekening)
-                            Toast.makeText(this@AddUpdateRekeningActivity, "${rekening?.name} berhasil diubah!", Toast.LENGTH_SHORT).show()
-                        } else {
-                            viewModel.createRekening(rekening as Rekening)
-                            Toast.makeText(this@AddUpdateRekeningActivity, "${rekening?.name} berhasil dibuat!", Toast.LENGTH_SHORT).show()
+                        val rekeningsItem = rekening?.toRekeningsItem()
+                        if (rekeningsItem != null) {
+                            if (isEdit) {
+                                viewModel.updateRekening(idAccount, token, rekeningsItem.id, rekeningsItem)
+                                Toast.makeText(this@AddUpdateRekeningActivity, "${rekening?.name} berhasil diubah!", Toast.LENGTH_SHORT).show()
+                            } else {
+                                viewModel.createRekening(idAccount, token, rekeningsItem)
+                                Toast.makeText(this@AddUpdateRekeningActivity, "${rekening?.name} berhasil dibuat!", Toast.LENGTH_SHORT).show()
+                            }
                         }
                         finish()
                     }
@@ -95,7 +108,12 @@ class AddUpdateRekeningActivity : AppCompatActivity() {
 
     private fun deleteRekening() {
         binding.btnDelete.setOnClickListener {
-            viewModel.deleteRekening(rekening as Rekening)
+            val idAccount = firebaseAuth.currentUser!!.uid
+            val token = firebaseAuth.currentUser!!.uid
+            rekening?.let {
+                viewModel.deleteRekening(idAccount, token, it.rekeningId)
+                Log.d("activity", "${it.rekeningId}")
+            }
             Toast.makeText(this@AddUpdateRekeningActivity, "${rekening?.name} berhasil dihapus!", Toast.LENGTH_SHORT).show()
             finish()
         }

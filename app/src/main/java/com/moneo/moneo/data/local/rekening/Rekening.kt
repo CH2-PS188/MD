@@ -9,6 +9,9 @@ import kotlinx.parcelize.Parcelize
 @Entity(tableName = "rekening")
 @Parcelize
 data class Rekening (
+    @ColumnInfo(name = "idAccount")
+    var idAccount : String? = null,
+
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     var rekeningId : Int = 0,
@@ -19,3 +22,4 @@ data class Rekening (
     @ColumnInfo(name = "balance")
     var balance : Int = 0,
 ) : Parcelable
+

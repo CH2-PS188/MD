@@ -13,10 +13,10 @@ data class Transaction (
     var date: String? = null,
 
     @ColumnInfo(name = "total")
-    var total: Int = 0,
+    var total: String? = null,
 
     @ColumnInfo(name = "id_account")
-    var idAccount: String? = "UEzUHuSwjQcpDcqBdO8FwkRHOew1",
+    var idAccount: String? = null,
 
     @ColumnInfo(name = "description")
     var description: String? = null,
