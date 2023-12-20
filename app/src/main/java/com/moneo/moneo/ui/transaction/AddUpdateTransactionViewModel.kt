@@ -29,11 +29,12 @@ class AddUpdateTransactionViewModel(private val transactionRepository: Transacti
         transactionRepository.insertTransaction(idAccount, token, transaction)
     }
 
-    fun updateTransaction(idAccount: String, token: String, transaction: DataItem) {
-        transactionRepository.updateTransaction(idAccount, token, transaction)
+    fun updateTransaction(idAccount: String, token: String, id: Int, transaction: DataItem) {
+        Log.d("update viewmodel", "$transaction")
+        transactionRepository.updateTransaction(idAccount, token, id, transaction)
     }
 
-    fun deleteTransaction(idAccount: String, token: String, transaction: Transaction) {
-        transactionRepository.deleteTransaction(idAccount, token, transaction)
+    fun deleteTransaction(idAccount: String, token: String, id: Int) {
+        transactionRepository.deleteTransaction(idAccount, token, id)
     }
 }

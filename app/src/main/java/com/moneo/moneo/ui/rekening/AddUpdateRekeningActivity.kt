@@ -58,8 +58,8 @@ class AddUpdateRekeningActivity : AppCompatActivity() {
 
         binding.titleAppbarRekening.text = titleBar
 
-        saveRekening()
         backToHome()
+        saveRekening()
         deleteRekening()
     }
 

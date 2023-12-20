@@ -36,6 +36,7 @@ class TransactionRepository private constructor(
                 call: Call<TransactionResponse>,
                 response: Response<TransactionResponse>
             ) {
+                Log.d("response all", "$response")
                 if (response.isSuccessful) {
                     Log.d("response is succesful", "${response.body()}")
                     val transactions = response.body()?.data
@@ -51,8 +52,8 @@ class TransactionRepository private constructor(
                                     dataItem.description,
                                     dataItem.id,
                                     dataItem.title,
-                                    dataItem.type,
                                     dataItem.category,
+                                    dataItem.type,
                                     dataItem.account
                                 )
                                 Log.d("transaction class", "$transaction")
@@ -131,21 +132,23 @@ class TransactionRepository private constructor(
         })
     }
 
-    fun updateTransaction(idAccount: String, token: String, request: DataItem) {
+    fun updateTransaction(idAccount: String, token: String, id: Int, request: DataItem) {
         val result = MediatorLiveData<Result<DataItem>>()
 
         result.value = Result.Loading
-        val client = apiService.editTransaksi(idAccount, token, request.id, request)
+        Log.d("update repo", "$request")
+        val client = apiService.editTransaksi(idAccount, token, id, request)
         client.enqueue(object : Callback<TransactionResponse> {
             override fun onResponse(
                 call: Call<TransactionResponse>,
                 response: Response<TransactionResponse>
             ) {
+                Log.d("edit", "$response")
                 if (response.isSuccessful) {
-                    Log.d("response is succesful", "${response.body()}")
+                    Log.d("edit is succesful", "${response.body()}")
                     val transactions = response.body()?.data
                     if (transactions != null) {
-                        Log.d("response not null", "$transactions")
+                        Log.d("edit not null", "$transactions")
                         appExecutors.diskIO.execute {
                             transactions.forEach { dataItem ->
                                 val transaction = Transaction(
@@ -159,7 +162,7 @@ class TransactionRepository private constructor(
                                     dataItem.type,
                                     dataItem.account
                                 )
-                                Log.d("transaction class", "$transaction")
+                                Log.d("edit transaction class", "$transaction")
                                 transactionDao.updateTransaction(transaction)
                                 result.value = Result.Success(transaction.toDataItem())
                             }
@@ -179,32 +182,32 @@ class TransactionRepository private constructor(
         })
     }
 
-    fun deleteTransaction(idAccount: String, token: String, request: Transaction) {
+    fun deleteTransaction(idAccount: String, token: String, id: Int) {
         val result = MediatorLiveData<Result<TransactionResponse>>()
 
         result.value = Result.Loading
-        val client = apiService.deleteTransaksi(idAccount, token, request.id)
-        Log.d("repo", "${request.id}")
+        val client = apiService.deleteTransaksi(idAccount, token, id)
+        Log.d("repo delete", "${id}")
         client.enqueue(object : Callback<TransactionResponse> {
             override fun onResponse(
                 call: Call<TransactionResponse>,
                 response: Response<TransactionResponse>
             ) {
-                Log.d("response", "$response")
+                Log.d("response delete", "$response")
                 if (response.isSuccessful) {
-                    Log.d("response is succesful", "${response.body()}")
+                    Log.d("delete is succesful", "${response.body()}")
                     val transactions = response.body()
                     if (transactions != null) {
-                        Log.d("response not null", "$transactions")
+                        Log.d("delete not null", "$transactions")
                         appExecutors.diskIO.execute {
-                            transactionDao.deleteTransaction(request)
+                            transactionDao.deleteTransaction(id)
                             result.postValue(Result.Success(transactions))
                         }
                     } else {
-                        result.value = Result.Error("Failed to parse response")
+                        result.value = Result.Error("Failed to parse response delete")
                     }
                 } else {
-                    result.value = Result.Error("API request failed")
+                    result.value = Result.Error("API request failed delete")
                 }
             }
 
@@ -213,6 +216,9 @@ class TransactionRepository private constructor(
             }
 
         })
+        appExecutors.diskIO.execute {
+            transactionDao.deleteTransaction(id)
+        }
     }
 
     fun getRekeningForTransaction(): LiveData<List<Rekening>> {
