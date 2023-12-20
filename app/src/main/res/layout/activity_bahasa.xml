@@ -58,6 +58,7 @@
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:textSize="16sp"
+            android:checked="true"
             android:textStyle="bold"
             android:text="@string/language_indonesia"/>
         <RadioButton

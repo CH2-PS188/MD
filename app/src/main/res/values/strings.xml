@@ -29,7 +29,7 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
 
-    <string name="welcome_back">Selamat Datang Kembali</string>
+    <string name="welcome_back">Selamat Datang "\n"Kembali</string>
     <string name="have_account">Sudah punya akun</string>
     <string name="create_new_account">Buat akun baru</string>
 
