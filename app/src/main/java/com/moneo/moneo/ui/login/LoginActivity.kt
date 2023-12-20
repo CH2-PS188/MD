@@ -3,7 +3,6 @@ package com.moneo.moneo.ui.login
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
@@ -18,36 +17,16 @@ import com.moneo.moneo.ui.registrasi.RegistrasiActivity
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var firebaseAuth: FirebaseAuth
-    private lateinit var authStateListener: FirebaseAuth.AuthStateListener
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        firebaseAuth = FirebaseAuth.getInstance()
-
-        authStateListener = FirebaseAuth.AuthStateListener { auth ->
-            val user = auth.currentUser
-            if (user != null) {
-                redirectToLoginScreen()
-                Log.e(user.uid, "Success Login UID: ${user.uid}")
-            }
-        }
+       firebaseAuth = FirebaseAuth.getInstance()
 
         setupAction()
         setupView()
         login()
-    }
-
-    private fun redirectToLoginScreen(){
-        val intent = Intent(this, MainActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        startActivity(intent)
-        finish()
-    }
-    override fun onStart() {
-        super.onStart()
-        firebaseAuth.addAuthStateListener(authStateListener)
     }
 
 
@@ -94,8 +73,6 @@ class LoginActivity : AppCompatActivity() {
                         if (it.isSuccessful){
                             startActivity(Intent(this, MainActivity::class.java))
                             finish()
-//                            val userId = firebaseAuth.currentUser?.uid
-//                            Toast.makeText(this, userId.toString(), Toast.LENGTH_SHORT).show()
                         }else{
                             Toast.makeText(this@LoginActivity, "Please Try Again", Toast.LENGTH_SHORT)
                                 .show()
