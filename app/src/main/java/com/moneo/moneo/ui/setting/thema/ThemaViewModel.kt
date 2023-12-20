@@ -10,12 +10,6 @@ import kotlinx.coroutines.launch
 
 class ThemaViewModel(private val pref: SettingPreferences): ViewModel() {
 
-    init {
-        viewModelScope.launch {
-            val themeSetting = pref.getThemeSetting().first()
-            saveThemeSetting(themeSetting)
-        }
-    }
     fun getThemeSetting(): LiveData<Boolean>{
         return pref.getThemeSetting().asLiveData()
     }

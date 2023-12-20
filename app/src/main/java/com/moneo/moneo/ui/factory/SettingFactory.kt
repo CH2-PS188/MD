@@ -5,7 +5,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.moneo.moneo.datastore.SettingPreferences
 import com.moneo.moneo.ui.setting.thema.ThemaViewModel
 
-class SettingFactory(private val pref: SettingPreferences): ViewModelProvider.NewInstanceFactory() {
+@Suppress("UNCHECKED_CAST")
+class SettingFactory(private val pref: SettingPreferences): ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {

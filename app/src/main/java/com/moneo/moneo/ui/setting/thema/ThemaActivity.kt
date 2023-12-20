@@ -31,6 +31,8 @@ class ThemaActivity : AppCompatActivity() {
         val pref = SettingPreferences.getInstance(dataStore)
         val themaViewModel = ViewModelProvider(this, SettingFactory(pref))[ThemaViewModel::class.java]
 
+
+
         themaViewModel.getThemeSetting().observe(this){isLightMode ->
             Log.d("ThemaActivity", "Theme setting changed: $isLightMode")
             binding.rbLighTheme.isChecked = isLightMode
