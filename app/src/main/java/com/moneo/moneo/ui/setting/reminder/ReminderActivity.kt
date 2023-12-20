@@ -5,7 +5,6 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -14,7 +13,6 @@ import androidx.lifecycle.lifecycleScope
 import com.google.firebase.auth.FirebaseAuth
 import com.moneo.moneo.databinding.ActivityReminderBinding
 import com.moneo.moneo.ui.factory.PrediksiFactory
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 
@@ -53,8 +51,7 @@ class ReminderActivity : AppCompatActivity() {
 
         reminderVM.success.observe(this){prediksiResponse ->
             val notificationData = prediksiResponse.perbandingan
-            val idAccount = firebaseAuth.currentUser!!.uid
-            reminderManager.scheduleRandomNotifications(idAccount, notificationData)
+            reminderManager.scheduleRandomNotifications(notificationData)
             Log.e("ReminderActivity", "Success ${prediksiResponse.perbandingan}")
         }
 

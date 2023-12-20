@@ -12,14 +12,13 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.moneo.moneo.R
 import com.moneo.moneo.data.remote.model.PrediksiItem
-import com.moneo.moneo.data.remote.response.PrediksiResponse
 import java.util.Calendar
 import java.util.Random
 
 class ReminderManager(private val context: Context)  {
 
     @SuppressLint("ScheduleExactAlarm")
-    fun scheduleRandomNotifications(accountId: String, notificationData: PrediksiItem) {
+    fun scheduleRandomNotifications(notificationData: PrediksiItem) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val notificationTimes = getRandomNotificationTimes()
             for (time in notificationTimes) {
