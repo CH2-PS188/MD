@@ -15,7 +15,6 @@ import com.moneo.moneo.databinding.ActivityMainBinding
 import com.moneo.moneo.ui.onboarding.OnboardingActivity
 
 
-
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -55,8 +54,6 @@ class MainActivity : AppCompatActivity() {
             // Handle the case where navHostFragment is null
             Log.e("MainActivity", "NavHostFragment is null")
         }
-
-
     }
 
     private fun redirectToLoginScreen() {

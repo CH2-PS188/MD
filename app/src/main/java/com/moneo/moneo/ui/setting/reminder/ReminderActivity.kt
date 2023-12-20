@@ -67,7 +67,6 @@ class ReminderActivity : AppCompatActivity() {
         // Update the notification status when the switch is toggled
         binding.switchReminder.setOnCheckedChangeListener { _, isChecked ->
             reminderVM.setNotificationEnabled(isChecked)
-            Toast.makeText(this, "Notifikasi Berhasil di Aktifkan", Toast.LENGTH_SHORT).show()
         }
 
 //        reminderVM.isNotificationEnabled.apply {

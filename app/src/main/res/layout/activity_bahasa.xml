@@ -58,6 +58,7 @@
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:textSize="16sp"
+            android:buttonTint="@color/color_primary"
             android:checked="true"
             android:textStyle="bold"
             android:text="@string/language_indonesia"/>
@@ -67,6 +68,7 @@
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:textSize="16sp"
+            android:buttonTint="@color/color_primary"
             android:textStyle="bold"
             android:text="@string/language_inggris"/>
     </RadioGroup>
