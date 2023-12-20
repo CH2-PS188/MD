@@ -12,6 +12,7 @@
         <item name="colorSecondaryVariant">@color/color_textSecondary</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
+        <item name="android:progressTint">@color/color_green</item>
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimary</item>
         <!-- Transition Animation -->
         <item name="android:windowActivityTransitions">true</item>-->

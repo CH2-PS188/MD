@@ -1,7 +1,9 @@
 package com.moneo.moneo.data.remote.retrofit
 
+import com.moneo.moneo.data.remote.model.PrediksiItem
 import com.moneo.moneo.data.remote.model.RekeningsItem
 import com.moneo.moneo.data.remote.model.TransactionItem
+import com.moneo.moneo.data.remote.response.PrediksiResponse
 import com.moneo.moneo.data.remote.response.RekeningResponse
 import com.moneo.moneo.data.remote.response.RekapResponse
 import com.moneo.moneo.data.remote.response.TransactionResponse
@@ -61,4 +63,11 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Path("id_account") idAccount: String
     ): Response<RekapResponse>
+
+    //Model ML
+    @GET("{id_account}/prediksi")
+    suspend fun getPrediksi(
+        @Header("Authorization") token: String,
+        @Path("id_account") idAccount: String
+    ): Response<PrediksiResponse>
 }
