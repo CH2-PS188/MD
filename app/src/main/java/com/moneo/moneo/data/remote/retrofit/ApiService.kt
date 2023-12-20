@@ -2,10 +2,12 @@ package com.moneo.moneo.data.remote.retrofit
 
 import com.moneo.moneo.data.local.transaction.Transaction
 import com.moneo.moneo.data.remote.response.DataItem
+import com.moneo.moneo.data.remote.response.RekapResponse
 import com.moneo.moneo.data.remote.response.RekeningResponse
 import com.moneo.moneo.data.remote.response.RekeningsItem
 import com.moneo.moneo.data.remote.response.TransactionResponse
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -74,4 +76,11 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Path("id") id: Int
     ) : Call<TransactionResponse>
+
+    // Rekap
+    @GET("{id_account}/laporan")
+    fun getAllLaporan(
+        @Path("id_account") idAccount: String,
+        @Header("Authorization") token: String
+    ): Call<RekapResponse>
 }

@@ -77,8 +77,10 @@ class TransactionRepository private constructor(
 
         })
         val localData = transactionDao.getAllTransaction()
-        result.addSource(localData) { newData: List<Transaction> ->
-            result.value = Result.Success(newData)
+        result.addSource(localData) { newData: List<Transaction>? ->
+            if (newData != null) {
+                result.value = Result.Success(newData)
+            }
         }
         return result
     }

@@ -57,8 +57,10 @@ class RekeningRepository private constructor(
         })
 
         val localData = rekeningDao.getAllRekening()
-        result.addSource(localData) { newData: List<Rekening> ->
-            result.value = Result.Success(newData)
+        result.addSource(localData) { newData: List<Rekening>? ->
+            if (newData != null) {
+                result.value = Result.Success(newData)
+            }
         }
         return result
     }

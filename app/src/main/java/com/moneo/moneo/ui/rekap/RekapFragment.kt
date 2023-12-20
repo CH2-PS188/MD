@@ -1,6 +1,6 @@
-package com.moneo.moneo.ui.rekening
+package com.moneo.moneo.ui.rekap
 
-import android.content.Intent
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -9,50 +9,50 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.moneo.moneo.ViewModelFactory
 import com.moneo.moneo.data.result.Result
-import com.moneo.moneo.databinding.FragmentRekeningBinding
+import com.moneo.moneo.databinding.FragmentRekapBinding
 
-class RekeningFragment : Fragment() {
+class RekapFragment : Fragment() {
 
-    private var _binding: FragmentRekeningBinding? = null
+    private var _binding: FragmentRekapBinding? = null
     private val binding get() = _binding
 
-    private val viewModel: RekeningViewModel by viewModels {
+    private val viewModel: RekapViewModel by viewModels {
         ViewModelFactory.getInstance(requireActivity())
     }
-
     private lateinit var firebaseAuth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentRekeningBinding.inflate(inflater, container, false)
+        _binding = FragmentRekapBinding.inflate(inflater, container, false)
         return binding?.root
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setListRekening()
-        setFabClick()
+        setRekap()
     }
 
-    private fun setListRekening() {
+    private fun setRekap() {
 
         firebaseAuth = FirebaseAuth.getInstance()
 
         val idAccount = firebaseAuth.currentUser!!.uid
         val token = firebaseAuth.currentUser!!.uid
 
-        val rekeningAdapter = RekeningAdapter()
+        var rekapAdapter = RekapAdapter(emptyList())
 
-        viewModel.getAllRekening(idAccount, token)
-        viewModel.getRekeningResult()?.observe(viewLifecycleOwner) { result ->
+        viewModel.getAllLaporan(idAccount, token)
+        viewModel.getLaporanResult()?.observe(viewLifecycleOwner) { result ->
             if (result != null) {
                 when (result) {
                     is Result.Loading -> {
@@ -60,13 +60,13 @@ class RekeningFragment : Fragment() {
                     }
                     is Result.Success -> {
                         binding?.progressBar?.visibility = View.GONE
-                        val listRekening = result.data
-                        rekeningAdapter.submitList(listRekening)
-                        binding?.rvRekening?.adapter = rekeningAdapter
-                        Log.d("REKENING-DATA", "$listRekening")
+                        val rekap = result.data
+                        rekapAdapter = result.let { RekapAdapter(listOf(rekap)) }
+                        binding?.rvRekap?.adapter = rekapAdapter
                     }
                     is Result.Error -> {
                         binding?.progressBar?.visibility = View.GONE
+                        binding?.tvNoData?.visibility = View.VISIBLE
                         Toast.makeText(
                             context,
                             "Terjadi kesalahan" + result.error,
@@ -77,9 +77,9 @@ class RekeningFragment : Fragment() {
             }
         }
 
-        binding?.rvRekening?.apply {
+        binding?.rvRekap?.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = rekeningAdapter
+            adapter = rekapAdapter
         }
     }
 
@@ -88,10 +88,4 @@ class RekeningFragment : Fragment() {
         _binding = null
     }
 
-    private fun setFabClick() {
-        binding?.btnFab?.setOnClickListener {
-            val intent = Intent(activity, AddUpdateRekeningActivity::class.java)
-            startActivity(intent)
-        }
-    }
 }

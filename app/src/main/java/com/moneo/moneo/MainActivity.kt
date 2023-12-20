@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import com.moneo.moneo.databinding.ActivityMainBinding
+import com.moneo.moneo.ui.rekap.RekapFragment
 import com.moneo.moneo.ui.rekening.RekeningFragment
 import com.moneo.moneo.ui.transaction.TransactionFragment
 
@@ -28,6 +29,10 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.action_account -> {
                     switchFragment(RekeningFragment())
+                    true
+                }
+                R.id.action_report -> {
+                    switchFragment(RekapFragment())
                     true
                 }
                 else -> false
