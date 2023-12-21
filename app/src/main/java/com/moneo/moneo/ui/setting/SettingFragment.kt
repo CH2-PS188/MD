@@ -32,20 +32,18 @@ class SettingFragment : Fragment() {
         firebaseAuth = FirebaseAuth.getInstance()
 
         binding?.cardKeluar?.setOnClickListener {
-            binding?.cardKeluar?.setOnClickListener {
-                AlertDialog.Builder(requireActivity()).apply {
-                    setTitle("Peringatan!")
-                    setMessage("Apakah anda yaki ingin keluar?")
-                    setPositiveButton("Ya") { _, _ ->
-                        firebaseAuth.signOut()
-                        activity?.finish()
-                    }
-                    setNegativeButton("Tidak") { dialog, _ ->
-                        dialog.dismiss()
-                    }
-                    create()
-                    show()
+            AlertDialog.Builder(requireActivity()).apply {
+                setTitle("Peringatan!")
+                setMessage("Apakah anda yakin ingin keluar?")
+                setPositiveButton("Ya") { _, _ ->
+                    firebaseAuth.signOut()
+                    activity?.finish()
                 }
+                setNegativeButton("Tidak") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                create()
+                show()
             }
         }
 

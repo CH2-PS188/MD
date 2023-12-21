@@ -1,5 +1,10 @@
 package com.moneo.moneo.ui.setting.reminder
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -46,6 +51,7 @@ class ReminderViewModel(private val settingRepository: SettingRepository): ViewM
                 if (response.isSuccessful) {
                     withContext(Dispatchers.Main) {
                         _success.value = response.body()
+                        Log.d("response prediksi", "${response.body()}")
                     }
                 }
             } catch (e: Exception) {

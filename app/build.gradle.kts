@@ -42,6 +42,10 @@ android {
 }
 
 dependencies {
+    // WorkManager
+    implementation("androidx.work:work-runtime-ktx:2.8.1")
+    implementation("androidx.preference:preference-ktx:1.2.1")
+
     // DataStore
     implementation ("androidx.datastore:datastore-core:1.0.0")
     implementation ("androidx.datastore:datastore-preferences:1.0.0")

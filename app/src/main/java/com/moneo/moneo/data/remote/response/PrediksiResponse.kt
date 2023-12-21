@@ -30,4 +30,5 @@ data class Perbandingan(
 
 	@field:SerializedName("totalWaktuLoading")
 	val totalWaktuLoading: String
+
 ) : Parcelable

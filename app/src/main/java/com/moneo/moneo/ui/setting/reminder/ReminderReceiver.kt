@@ -1,6 +1,5 @@
 package com.moneo.moneo.ui.setting.reminder
 
-import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.BroadcastReceiver
@@ -10,7 +9,6 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.moneo.moneo.R
 import com.moneo.moneo.data.remote.response.Perbandingan
-import com.moneo.moneo.data.remote.response.PrediksiResponse
 import java.util.Random
 
 @Suppress("DEPRECATION")

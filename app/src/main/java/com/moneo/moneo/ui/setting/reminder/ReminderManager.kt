@@ -27,7 +27,7 @@ class ReminderManager(private val context: Context)  {
                 intent.putExtra("notificationData", notificationData)
                 val pendingIntent = PendingIntent.getBroadcast(
                     context,
-                    notificationData.hashCode(), // Use a unique request code for each pending intent
+                    notificationData.hashCode(),
                     intent,
                     PendingIntent.FLAG_UPDATE_CURRENT
                 )
@@ -35,7 +35,6 @@ class ReminderManager(private val context: Context)  {
 
                 alarmManager.cancel(pendingIntent)
 
-                // Schedule Notification
                 scheduleNotification(time, notificationData)
             }
         }
@@ -57,6 +56,8 @@ class ReminderManager(private val context: Context)  {
 
         return notificationTimes
     }
+
+
 
     @SuppressLint("ServiceCast")
     private fun scheduleNotification(timeInMillis: Long, notificationData: Perbandingan) {

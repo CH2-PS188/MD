@@ -1,5 +1,6 @@
 package com.moneo.moneo.ui.rekening
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -26,6 +27,8 @@ class RekeningFragment : Fragment() {
 
     private lateinit var firebaseAuth: FirebaseAuth
 
+    private val rekeningAdapter = RekeningAdapter()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -37,11 +40,11 @@ class RekeningFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setListRekening()
         setFabClick()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun setListRekening() {
 
         firebaseAuth = FirebaseAuth.getInstance()
@@ -49,7 +52,10 @@ class RekeningFragment : Fragment() {
         val idAccount = firebaseAuth.currentUser!!.uid
         val token = firebaseAuth.currentUser!!.uid
 
-        val rekeningAdapter = RekeningAdapter()
+        binding?.rvRekening?.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = rekeningAdapter
+        }
 
         viewModel.getAllRekening(idAccount, token)
         viewModel.getRekeningResult()?.observe(viewLifecycleOwner) { result ->
@@ -62,6 +68,7 @@ class RekeningFragment : Fragment() {
                         binding?.progressBar?.visibility = View.GONE
                         val listRekening = result.data
                         rekeningAdapter.submitList(listRekening)
+                        rekeningAdapter.notifyDataSetChanged()
                         binding?.rvRekening?.adapter = rekeningAdapter
                         Log.d("REKENING-DATA", "$listRekening")
                     }
@@ -69,17 +76,12 @@ class RekeningFragment : Fragment() {
                         binding?.progressBar?.visibility = View.GONE
                         Toast.makeText(
                             context,
-                            "Terjadi kesalahan" + result.error,
+                            "Terjadi kesalahan: ${result.error}",
                             Toast.LENGTH_SHORT
                         ).show()
                     }
                 }
             }
-        }
-
-        binding?.rvRekening?.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = rekeningAdapter
         }
     }
 
