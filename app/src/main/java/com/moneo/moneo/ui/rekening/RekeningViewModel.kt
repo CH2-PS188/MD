@@ -18,10 +18,11 @@ class RekeningViewModel(private val rekeningRepository: RekeningRepository) : Vi
         return _rekeningList
     }
 
-    fun getAllRekening(idAccount: String, token: String) {
+    fun getAllRekening(idAccount: String, token: String): LiveData<Result<List<Rekening>>>? {
         viewModelScope.launch {
             _rekeningList = rekeningRepository.getAllRekening(idAccount, token)
         }
+        return _rekeningList
     }
 
 }

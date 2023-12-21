@@ -17,4 +17,16 @@
         android:label="@string/navigation_account"
         tools:layout="@layout/fragment_rekening" />
 
+    <fragment
+        android:id="@+id/navigationRekap"
+        android:name="com.moneo.moneo.ui.rekap.RekapFragment"
+        android:label="@string/navigation_rekap"
+        tools:layout="@layout/fragment_rekap" />
+
+    <fragment
+        android:id="@+id/navigationSetting"
+        android:name="com.moneo.moneo.ui.setting.SettingFragment"
+        android:label="@string/navigation_setting"
+        tools:layout="@layout/fragment_setting" />
+
 </navigation>

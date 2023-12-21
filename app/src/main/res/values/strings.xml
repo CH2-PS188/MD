@@ -84,4 +84,13 @@
     <string name="total">Rp 100.000.000</string>
     <string name="nama_rekening">Nama Rekening</string>
     <string name="total_saldo">Total Saldo</string>
+
+    <string name="active_reminder">Aktifkan Pengingat</string>
+    <string name="language_indonesia">Bahasa Indonesia</string>
+    <string name="language_inggris">Bahasa Inggris</string>
+    <string name="light_theme">Mode Terang</string>
+    <string name="dark_theme">Mode Gelap</string>
+
+    <string name="notification_channel_name">Moneo</string>
+    <string name="notification_channel_id">Moneo</string>
 </resources>

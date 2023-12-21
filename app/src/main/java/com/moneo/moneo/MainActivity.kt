@@ -7,11 +7,13 @@ import androidx.navigation.NavController
 import com.moneo.moneo.databinding.ActivityMainBinding
 import com.moneo.moneo.ui.rekap.RekapFragment
 import com.moneo.moneo.ui.rekening.RekeningFragment
+import com.moneo.moneo.ui.setting.SettingFragment
 import com.moneo.moneo.ui.transaction.TransactionFragment
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var selectedFragment: Fragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,8 +37,28 @@ class MainActivity : AppCompatActivity() {
                     switchFragment(RekapFragment())
                     true
                 }
+                R.id.action_setting -> {
+                    switchFragment(SettingFragment())
+                    true
+                }
                 else -> false
             }
+        }
+
+        if (savedInstanceState != null) {
+            selectedFragment = supportFragmentManager.getFragment(savedInstanceState, "selectedFragment") ?: TransactionFragment()
+        } else {
+            selectedFragment = TransactionFragment()
+        }
+
+        switchFragment(selectedFragment)
+
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        if (selectedFragment.isAdded) {
+            supportFragmentManager.putFragment(outState, "selectedFragment", selectedFragment)
         }
     }
 
