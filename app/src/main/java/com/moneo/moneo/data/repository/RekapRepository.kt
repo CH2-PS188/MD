@@ -40,8 +40,10 @@ class RekapRepository private constructor(
                                 summary?.endDate,
                                 summary?.totalExpenses,
                                 summary?.difference,
-                                summary?.startDate.toString(),
-                                summary?.date
+                                summary?.startDate,
+                                summary?.date,
+                                summary?.averageIncome,
+                                summary?.averageExpenses
                             )
                             result.postValue(Result.Success(rekap))
                         }

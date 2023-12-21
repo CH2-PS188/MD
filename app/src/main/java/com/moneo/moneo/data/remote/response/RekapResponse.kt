@@ -28,7 +28,7 @@ data class Summary(
 	@field:SerializedName("startDate")
 	val startDate: String? = null,
 
-	@field:SerializedName("Date")
+	@field:SerializedName("dateRange")
 	val date: String? = null,
 
 	@field:SerializedName("averageDailyIncome")

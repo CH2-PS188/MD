@@ -26,6 +26,8 @@ class RekapAdapter(private var listRekap: List<Summary>) :
                 tvAngkaPengeluaran.text = rekap.totalExpenses
                 tvAngkaPemasukan.text = rekap.totalIncome
                 tvAngkaSelisih.text = rekap.difference
+                tvAngkaRataPemasukan.text = rekap.averageIncome
+                tvAngkaRataPengeluaran.text = rekap.averageExpenses
             }
         }
     }
