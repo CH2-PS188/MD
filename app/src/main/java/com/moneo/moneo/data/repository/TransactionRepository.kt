@@ -8,7 +8,6 @@ import com.moneo.moneo.data.local.rekening.RekeningDao
 import com.moneo.moneo.data.local.transaction.Transaction
 import com.moneo.moneo.data.local.transaction.TransactionDao
 import com.moneo.moneo.data.remote.response.DataItem
-import com.moneo.moneo.data.remote.response.RekeningsItem
 import com.moneo.moneo.data.remote.response.TransactionResponse
 import com.moneo.moneo.data.remote.response.toDataItem
 import com.moneo.moneo.data.remote.retrofit.ApiService
@@ -62,12 +61,12 @@ class TransactionRepository private constructor(
                             transactionDao.insertTransaction(transactionList)
                         }
                     } else {
-                        Log.d("response is null", "${response.body()}")
-                        result.value = Result.Error("Failed to parse response")
+                        Log.d("response is null", response.message())
+                        result.value = Result.Error(response.message())
                     }
                 } else {
-                    Log.d("response is failed", "${response.body()}")
-                    result.value = Result.Error("API request failed")
+                    Log.d("response is failed", response.message())
+                    result.value = Result.Error(response.message())
                 }
             }
 
@@ -120,10 +119,10 @@ class TransactionRepository private constructor(
                             }
                         }
                     } else {
-                        result.value = Result.Error("Failed to parse response")
+                        result.value = Result.Error(response.message())
                     }
                 } else {
-                    result.value = Result.Error("API request failed")
+                    result.value = Result.Error(response.message())
                 }
             }
 
@@ -170,10 +169,10 @@ class TransactionRepository private constructor(
                             }
                         }
                     } else {
-                        result.value = Result.Error("Failed to parse response")
+                        result.value = Result.Error(response.message())
                     }
                 } else {
-                    result.value = Result.Error("API request failed")
+                    result.value = Result.Error(response.message())
                 }
             }
 
@@ -206,10 +205,10 @@ class TransactionRepository private constructor(
                             result.postValue(Result.Success(transactions))
                         }
                     } else {
-                        result.value = Result.Error("Failed to parse response delete")
+                        result.value = Result.Error(response.message())
                     }
                 } else {
-                    result.value = Result.Error("API request failed delete")
+                    result.value = Result.Error(response.message())
                 }
             }
 

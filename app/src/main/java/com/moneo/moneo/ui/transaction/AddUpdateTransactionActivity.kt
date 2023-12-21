@@ -3,14 +3,11 @@ package com.moneo.moneo.ui.transaction
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
-import androidx.core.view.isVisible
-import androidx.lifecycle.lifecycleScope
 import com.google.firebase.auth.FirebaseAuth
 import com.moneo.moneo.R
 import com.moneo.moneo.ViewModelFactory
@@ -19,15 +16,12 @@ import com.moneo.moneo.data.local.transaction.Transaction
 import com.moneo.moneo.data.remote.response.toDataItem
 import com.moneo.moneo.databinding.ActivityAddUpdateTransactionBinding
 import com.moneo.moneo.utils.DatePickerFragment
-import com.moneo.moneo.utils.TimePickerFragment
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
-class AddUpdateTransactionActivity : AppCompatActivity(), DatePickerFragment.DialogDateListener, TimePickerFragment.DialogTimeListener {
+class AddUpdateTransactionActivity : AppCompatActivity(), DatePickerFragment.DialogDateListener {
 
     private var dueDateMillis: Long = System.currentTimeMillis()
 
@@ -84,8 +78,8 @@ class AddUpdateTransactionActivity : AppCompatActivity(), DatePickerFragment.Dia
                                 toggleGroup.check(R.id.btn_expense)
                             }
                             val parts = transaction.date?.split("T", "Z")
-                            edtDate.setText(parts?.get(0))
-                            edtTime.setText(parts?.get(1))
+                            val date = parts?.get(0)
+                            edtDate.setText(date?.let { convertFormat(it) })
                             val rekeningIndex = findRekeningIndexInList(listRekening, transaction.rekening)
                             spinnerRekening.setSelection(rekeningIndex)
                             edtTotal.setText(transaction.total.toString())
@@ -105,7 +99,6 @@ class AddUpdateTransactionActivity : AppCompatActivity(), DatePickerFragment.Dia
 
         backToHome()
         showDatePicker()
-        showTimePicker()
         saveTransaction()
         deleteTransaction()
     }
@@ -113,75 +106,82 @@ class AddUpdateTransactionActivity : AppCompatActivity(), DatePickerFragment.Dia
     private fun saveTransaction() {
         binding.btnSave.setOnClickListener {
             val date = binding.edtDate.text.toString()
-            val time = binding.edtTime.text.toString()
             val rekening = binding.spinnerRekening.selectedItem.toString()
             val total = binding.edtTotal.text.toString()
             val title = binding.edtTitle.text.toString()
             val category = binding.edtCategory.text.toString()
             val description = binding.edtDescription.text.toString()
-
-            if (validateInput(date, time, rekening, total, title, category)) {
-                jenisTransaksi = if (binding.toggleGroup.checkedButtonId == R.id.btn_income) {
-                    "pemasukan"
-                } else {
-                    "pengeluaran"
+            when {
+                date.isEmpty() -> {
+                    binding.edtDate.error = "Field can not be blank"
+                    showToast("Tanggal harus diisi!")
                 }
-                val idAccount = firebaseAuth.currentUser!!.uid
-                val token = firebaseAuth.currentUser!!.uid
-                transaction?.apply {
-                    this.date = convertToISO8601Format(date, time)
-                    this.idAccount = idAccount
-                    this.rekening = rekening
-                    this.total = total
-                    this.title = title
-                    this.category = category
-                    this.description = description
-                    this.type = jenisTransaksi ?: "pengeluaran"
+                rekening.isEmpty() -> {
+                    Toast.makeText(this@AddUpdateTransactionActivity, "Rekening kosong", Toast.LENGTH_SHORT).show()
                 }
-                val transactionItem = transaction?.toDataItem()
-                if (transactionItem != null) {
-                    if (isEdit) {
-                        viewModel.updateTransaction(idAccount, token, transactionItem.id, transactionItem)
-                        Log.d("update", transactionItem.toString())
-                        Toast.makeText(this@AddUpdateTransactionActivity, "${transaction?.title} berhasil diubah!", Toast.LENGTH_SHORT).show()
+                total.isEmpty() -> {
+                    binding.edtTotal.error = "Field can not be blank"
+                    showToast("Jumlah harus diisi!")
+                }
+                title.isEmpty() -> {
+                    binding.edtTitle.error = "Field can not be blank"
+                    showToast("Judul harus diisi!")
+                }
+                category.isEmpty() -> {
+                    binding.edtCategory.error = "Field can not be blank"
+                    showToast("Kategori harus diisi!")
+                }
+                else -> {
+                    jenisTransaksi = if (binding.toggleGroup.checkedButtonId == R.id.btn_income) {
+                        "pemasukan"
                     } else {
-                        viewModel.insertTransaction(idAccount, token, transactionItem)
-                        Log.d("create", transactionItem.toString())
-                        Toast.makeText(this@AddUpdateTransactionActivity, "${transaction?.title} berhasil dibuat!", Toast.LENGTH_SHORT).show()
+                        "pengeluaran"
+                    }
+                    val idAccount = firebaseAuth.currentUser!!.uid
+                    val token = firebaseAuth.currentUser!!.uid
+                    transaction?.apply {
+                        this.date = date
+                        if (!isValidDateFormat(this.date!!)) {
+                            binding.edtDate.error = "Invalid date format"
+                            showToast("Invalid date format")
+                        } else {
+                            this.idAccount = idAccount
+                            this.rekening = rekening
+                            val parts = total.split(" ")
+                            this.total = parts[1]
+                            this.title = title
+                            this.category = category
+                            this.description = description
+                            this.type = jenisTransaksi ?: "pengeluaran"
+                            val transactionItem = transaction?.toDataItem()
+                            if (transactionItem != null) {
+                                if (isEdit) {
+                                    viewModel.updateTransaction(idAccount, token, transactionItem.id, transactionItem)
+                                    Log.d("update", transactionItem.toString())
+                                    Toast.makeText(this@AddUpdateTransactionActivity, "${transaction?.title} berhasil diubah!", Toast.LENGTH_SHORT).show()
+                                } else {
+                                    viewModel.insertTransaction(idAccount, token, transactionItem)
+                                    Log.d("create", transactionItem.toString())
+                                    Toast.makeText(this@AddUpdateTransactionActivity, "${transaction?.title} berhasil dibuat!", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                            finish()
+                        }
                     }
                 }
-                finish()
             }
         }
     }
 
-    private fun validateInput(date: String, time: String, rekening: String, total: String, title: String, category: String): Boolean {
-        return when {
-            date.isEmpty() -> {
-                binding.edtDate.error = "Field can not be blank"
-                false
-            }
-            time.isEmpty() -> {
-                binding.edtTime.error = "Field can not be blank"
-                false
-            }
-            rekening.isEmpty() -> {
-                Toast.makeText(this@AddUpdateTransactionActivity, "Rekening kosong", Toast.LENGTH_SHORT).show()
-                false
-            }
-            total.isEmpty() -> {
-                binding.edtTotal.error = "Field can not be blank"
-                false
-            }
-            title.isEmpty() -> {
-                binding.edtTitle.error = "Field can not be blank"
-                false
-            }
-            category.isEmpty() -> {
-                binding.edtCategory.error = "Field can not be blank"
-                false
-            }
-            else -> true
+    fun isValidDateFormat(date: String): Boolean {
+        val dateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
+        dateFormat.isLenient = false
+
+        try {
+            dateFormat.parse(date)
+            return true
+        } catch (e: ParseException) {
+            return false
         }
     }
 
@@ -203,11 +203,10 @@ class AddUpdateTransactionActivity : AppCompatActivity(), DatePickerFragment.Dia
         }
     }
 
-    private fun convertToISO8601Format(date: String, time: String): String {
-        val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault())
-        val outputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
-        val dateTimeString = "$date $time"
-        val dateTime = inputFormat.parse(dateTimeString)
+    private fun convertFormat(date: String): String {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
+        val dateTime = inputFormat.parse(date)
         return outputFormat.format(dateTime)
     }
 
@@ -221,26 +220,9 @@ class AddUpdateTransactionActivity : AppCompatActivity(), DatePickerFragment.Dia
     override fun onDialogDateSet(tag: String?, year: Int, month: Int, dayOfMonth: Int) {
         val calendar = Calendar.getInstance()
         calendar.set(year, month, dayOfMonth)
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val dateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
         binding.edtDate.setText(dateFormat.format(calendar.time))
         dueDateMillis = calendar.timeInMillis
-    }
-
-    private fun showTimePicker() {
-        binding.btnTime.setOnClickListener {
-            val dialogFragment = TimePickerFragment()
-            dialogFragment.show(supportFragmentManager, "timePicker")
-        }
-    }
-
-    override fun onDialogTimeSet(tag: String?, hour: Int, minute: Int) {
-        val calendar = Calendar.getInstance()
-        calendar.set(Calendar.HOUR_OF_DAY, hour)
-        calendar.set(Calendar.MINUTE, minute)
-        calendar.set(Calendar.SECOND, 0)
-        calendar.set(Calendar.MILLISECOND, 0)
-        val timeFormat = SimpleDateFormat("HH:mm:ss.SSS", Locale.getDefault())
-        binding.edtTime.setText(timeFormat.format(calendar.time))
     }
 
     private fun findRekeningIndexInList(rekeningList: List<Rekening>, rekeningName: String?): Int {
@@ -250,6 +232,10 @@ class AddUpdateTransactionActivity : AppCompatActivity(), DatePickerFragment.Dia
             }
         }
         return 0
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
 

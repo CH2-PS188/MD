@@ -90,15 +90,15 @@ class RekeningRepository private constructor(
                             }
                         }
                     } else {
-                        result.value = Result.Error("Failed to parse response")
+                        result.value = Result.Error(response.message())
                     }
                 } else {
-                    result.value = Result.Error("API request failed")
+                    result.value = Result.Error(response.message())
                 }
             }
 
             override fun onFailure(call: Call<RekeningResponse>, t: Throwable) {
-                result.value = Result.Error("API request failed")
+                result.value = Result.Error(t.message.toString())
             }
 
         })
@@ -132,15 +132,15 @@ class RekeningRepository private constructor(
                             result.value = (Result.Success(request))
                         }
                     } else {
-                        result.value = Result.Error("Failed to parse response")
+                        result.value = Result.Error(response.message())
                     }
                 } else {
-                    result.value = Result.Error("API request failed")
+                    result.value = Result.Error(response.message())
                 }
             }
 
             override fun onFailure(call: Call<RekeningResponse>, t: Throwable) {
-                result.value = Result.Error("API request failed")
+                result.value = Result.Error(t.message.toString())
             }
 
         })
@@ -165,15 +165,15 @@ class RekeningRepository private constructor(
                             result.postValue(Result.Success(responseBody))
                         }
                     } else {
-                        result.value = Result.Error("Failed to parse response")
+                        result.value = Result.Error(response.message())
                     }
                 } else {
-                    result.value = Result.Error("API request failed")
+                    result.value = Result.Error(response.message())
                 }
             }
 
             override fun onFailure(call: Call<RekeningResponse>, t: Throwable) {
-                result.value = Result.Error("API request failed")
+                result.value = Result.Error(t.message.toString())
             }
         })
     }

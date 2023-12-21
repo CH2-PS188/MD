@@ -77,9 +77,11 @@ class AddUpdateRekeningActivity : AppCompatActivity() {
                 when {
                     name.isEmpty() -> {
                         binding.edtName.error = "Field can not be blank"
+                        showToast("Kolom judul tidak boleh kosong!")
                     }
                     balance.isEmpty() -> {
                         binding.edtBalance.error = "Field can not be blank"
+                        showToast("Kolom saldo tidak boleh kosong!")
                     }
                     else -> {
                         val idAccount = firebaseAuth.currentUser!!.uid
@@ -117,6 +119,10 @@ class AddUpdateRekeningActivity : AppCompatActivity() {
             Toast.makeText(this@AddUpdateRekeningActivity, "${rekening?.name} berhasil dihapus!", Toast.LENGTH_SHORT).show()
             finish()
         }
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     companion object {

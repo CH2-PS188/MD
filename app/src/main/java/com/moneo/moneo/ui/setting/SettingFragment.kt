@@ -56,10 +56,5 @@ class SettingFragment : Fragment() {
             val intent = Intent(context, ThemeActivity::class.java)
             startActivity(intent)
         }
-
-        binding?.cardBahasa?.setOnClickListener {
-            val intent = Intent(context, BahasaActivity::class.java)
-            startActivity(intent)
-        }
     }
 }

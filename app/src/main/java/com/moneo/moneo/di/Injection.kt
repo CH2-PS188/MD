@@ -42,8 +42,9 @@ object Injection {
 //        val database = RekapDatabase.getDatabase(context)
 //        val dao = database.rekapDao()
         val apiService = ApiConfig.getApiService()
+        val apiModelService = ApiModelConfig.getApiService()
         val appExecutors = AppExecutors()
-        return RekapRepository.getInstance(apiService, appExecutors)
+        return RekapRepository.getInstance(apiService, apiModelService, appExecutors)
     }
 
     fun provideSettingRepository(context: Context): SettingRepository {
@@ -54,7 +55,7 @@ object Injection {
         } else {
             throw UnsupportedOperationException("Unsupported Android version")
         }
-        val apiService = ApiModelConfig.getApiService()
+        val apiService = ApiConfig.getApiService()
         val preferences = SettingPreferences.getInstance(dataStore)
         val appExecutors = AppExecutors()
         return SettingRepository.getInstance(preferences, apiService, appExecutors)

@@ -1,14 +1,23 @@
 package com.moneo.moneo.data.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.moneo.moneo.data.local.transaction.Transaction
+import com.moneo.moneo.data.remote.response.Perbandingan
 import com.moneo.moneo.data.remote.response.PrediksiResponse
+import com.moneo.moneo.data.remote.response.RekapResponse
+import com.moneo.moneo.data.remote.response.Summary
 import com.moneo.moneo.data.remote.retrofit.ApiService
+import com.moneo.moneo.data.result.Result
 import com.moneo.moneo.datastore.SettingPreferences
 import com.moneo.moneo.utils.AppExecutors
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.Response
 
 class SettingRepository(
@@ -23,10 +32,6 @@ class SettingRepository(
 
     suspend fun saveThemeSetting(isLightTheme: Boolean){
         preferences.saveThemeSetting(isLightTheme)
-    }
-
-    suspend fun getPrediksi(token: String, idAccount: String): Response<PrediksiResponse> {
-        return apiService.getPrediksi(token, idAccount)
     }
 
     suspend fun isNotificationEnabled(): Boolean {

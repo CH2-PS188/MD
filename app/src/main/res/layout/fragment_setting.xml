@@ -116,42 +116,42 @@
     <!-- End Thema  -->
 
     <!-- Start Bahasa  -->
-    <LinearLayout
-        android:id="@+id/card_bahasa"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:layout_marginStart="15dp"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/card_thema"
-        app:layout_constraintStart_toStartOf="parent">
+<!--    <LinearLayout-->
+<!--        android:id="@+id/card_bahasa"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="25dp"-->
+<!--        android:layout_marginStart="15dp"-->
+<!--        android:orientation="horizontal"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/card_thema"-->
+<!--        app:layout_constraintStart_toStartOf="parent">-->
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="8dp"
-            android:elevation="1dp"
-            android:backgroundTint="@color/color_primary">
+<!--        <androidx.cardview.widget.CardView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:cardCornerRadius="8dp"-->
+<!--            android:elevation="1dp"-->
+<!--            android:backgroundTint="@color/color_primary">-->
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="4dp"
-                android:src="@drawable/ic_language"
-                app:tint="@color/white"
-                android:contentDescription="@string/bahasa" />
-        </androidx.cardview.widget.CardView>
+<!--            <ImageView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:padding="4dp"-->
+<!--                android:src="@drawable/ic_language"-->
+<!--                app:tint="@color/white"-->
+<!--                android:contentDescription="@string/bahasa" />-->
+<!--        </androidx.cardview.widget.CardView>-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginStart="15dp"
-            android:gravity="center"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:text="@string/bahasa" />
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_marginStart="15dp"-->
+<!--            android:gravity="center"-->
+<!--            android:textSize="18sp"-->
+<!--            android:textStyle="bold"-->
+<!--            android:text="@string/bahasa" />-->
 
-    </LinearLayout>
+<!--    </LinearLayout>-->
 
     <!-- End Bahasa  -->
 
@@ -163,7 +163,7 @@
         android:layout_marginTop="25dp"
         android:layout_marginHorizontal="15dp"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/card_bahasa"
+        app:layout_constraintTop_toBottomOf="@+id/card_thema"
         app:layout_constraintStart_toStartOf="parent">
 
         <androidx.cardview.widget.CardView

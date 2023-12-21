@@ -17,7 +17,8 @@ class TransactionAdapter : ListAdapter<Transaction, TransactionAdapter.ViewHolde
     class ViewHolder(private val binding: ItemTransactionBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(transaction: Transaction) {
             binding.apply {
-                tvItemDate.text = transaction.date
+                val parts = transaction.date?.split("T")
+                tvItemDate.text = parts?.get(0)
                 tvItemTitle.text = transaction.title
                 tvItemCategory.text = transaction.category
                 if (transaction.type == "pengeluaran") {

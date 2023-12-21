@@ -46,19 +46,8 @@ class ReminderViewModel(private val settingRepository: SettingRepository): ViewM
 
     fun getPrediksi(token: String, idAccount: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            try {
-                val response = settingRepository.getPrediksi(token, idAccount)
-                if (response.isSuccessful) {
-                    withContext(Dispatchers.Main) {
-                        _success.value = response.body()
-                        Log.d("response prediksi", "${response.body()}")
-                    }
-                }
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    _error.value = "Error: ${e.message}"
-                }
-            }
+
+
         }
     }
 

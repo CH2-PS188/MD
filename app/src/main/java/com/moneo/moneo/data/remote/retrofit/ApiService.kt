@@ -1,6 +1,5 @@
 package com.moneo.moneo.data.remote.retrofit
 
-import com.moneo.moneo.data.local.transaction.Transaction
 import com.moneo.moneo.data.remote.response.DataItem
 import com.moneo.moneo.data.remote.response.PrediksiResponse
 import com.moneo.moneo.data.remote.response.RekapResponse
@@ -8,12 +7,10 @@ import com.moneo.moneo.data.remote.response.RekeningResponse
 import com.moneo.moneo.data.remote.response.RekeningsItem
 import com.moneo.moneo.data.remote.response.TransactionResponse
 import retrofit2.Call
-import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
-import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
@@ -79,7 +76,7 @@ interface ApiService {
     ) : Call<TransactionResponse>
 
     // Rekap
-    @GET("{id_account}/laporan")
+    @GET("{id_account}/detaillaporan")
     fun getAllLaporan(
         @Path("id_account") idAccount: String,
         @Header("Authorization") token: String
@@ -87,8 +84,8 @@ interface ApiService {
 
     // ML
     @GET("{id_account}/prediksi")
-    suspend fun getPrediksi(
+    fun getPrediksi(
         @Header("Authorization") token: String,
         @Path("id_account") idAccount: String
-    ): Response<PrediksiResponse>
+    ): Call<PrediksiResponse>
 }

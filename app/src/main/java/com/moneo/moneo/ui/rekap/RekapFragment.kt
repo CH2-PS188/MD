@@ -39,7 +39,48 @@ class RekapFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding?.cvPrediksi?.visibility = View.GONE
+
+        setPrediksi()
         setRekap()
+    }
+
+    private fun setPrediksi() {
+
+        firebaseAuth = FirebaseAuth.getInstance()
+
+        val idAccount = firebaseAuth.currentUser!!.uid
+        val token = firebaseAuth.currentUser!!.uid
+
+        viewModel.getPrediksi(idAccount, token)
+        viewModel.getPrediksiResult()?.observe(viewLifecycleOwner) { prediksiResult ->
+            if (prediksiResult != null) {
+                when (prediksiResult) {
+                    is Result.Loading -> {
+
+                    }
+                    is Result.Success -> {
+                        binding?.apply {
+                            cvPrediksi.visibility = View.VISIBLE
+                            val prediksi = prediksiResult.data
+                            tvTotalIdr.text = prediksi.totalPemasukanIDR.toString()
+                            tvTotalInr.text = prediksi.totalPemasukanINR.toString()
+                        }
+                    }
+                    is Result.Error -> {
+                        binding?.apply {
+                            Toast.makeText(
+                                context,
+                                "Terjadi kesalahan pada Prediksi " + prediksiResult.error,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                }
+            }
+
+        }
+
     }
 
     private fun setRekap() {
@@ -69,7 +110,7 @@ class RekapFragment : Fragment() {
                         binding?.tvNoData?.visibility = View.VISIBLE
                         Toast.makeText(
                             context,
-                            "Terjadi kesalahan" + result.error,
+                            "Terjadi kesalahan " + result.error,
                             Toast.LENGTH_SHORT
                         ).show()
                     }
