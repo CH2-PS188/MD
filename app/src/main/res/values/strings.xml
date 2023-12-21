@@ -81,9 +81,11 @@
     <string name="kategori">Kategori</string>
     <string name="keterangan">Keterangan</string>
     <string name="simpan">Simpan</string>
-    <string name="total">Rp 100.000.000</string>
+
     <string name="nama_rekening">Nama Rekening</string>
+    <string name="total">Rp 100.000.000</string>
     <string name="total_saldo">Total Saldo</string>
+    <string name="total_rekap">Total</string>
 
 
     <string name="active_reminder">Aktifkan Pengingat</string>

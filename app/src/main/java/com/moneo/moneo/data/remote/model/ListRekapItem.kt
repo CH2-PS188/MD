@@ -21,6 +21,15 @@ data class ListRekapItem(
     @field:SerializedName("startDate")
     val startDate: String,
 
-    @field:SerializedName("Date")
-    val date: String,
+    @field:SerializedName("dateRange")
+    val dateRange: String,
+
+    @field:SerializedName("averageDailyIncome")
+    val averageDailyIncome: String,
+
+    @field:SerializedName("averageDailyExpenses")
+    val averageDailyExpenses: String,
+
+    @field:SerializedName("total")
+    val total: Long,
 ):Parcelable

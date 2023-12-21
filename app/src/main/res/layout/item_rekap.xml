@@ -88,6 +88,18 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_rataPemasukan"
             tools:text="@string/selisih" />
 
+        <TextView
+            android:id="@+id/tv_total"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textAppearance="?attr/textAppearanceBody1"
+            android:textSize="14sp"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_selisih"
+            tools:text="@string/total_rekap" />
+
         <!--  Text AngkaPengeluaran, AngkaPemasukan, AngkaSelisih -->
 
         <TextView
@@ -156,6 +168,18 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_angkaRataPemasukan"
             tools:text="@string/angka_selisih" />
 
+        <TextView
+            android:id="@+id/tv_angkaTotal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold"
+            android:textAppearance="?attr/textAppearanceBody1"
+            android:textSize="14sp"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_angkaSelisih"
+            tools:text="@string/total" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

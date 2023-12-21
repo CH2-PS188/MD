@@ -58,7 +58,7 @@ interface ApiService {
 
 
     //Laporan
-    @GET("{id_account}/laporan")
+    @GET("{id_account}/detaillaporan")
     suspend fun getAllLaporan(
         @Header("Authorization") token: String,
         @Path("id_account") idAccount: String

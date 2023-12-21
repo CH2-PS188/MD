@@ -1,27 +1,37 @@
 package com.moneo.moneo.ui.setting.reminder
 
-import android.Manifest
+
+import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.core.app.NotificationManagerCompat
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
+import androidx.work.Constraints
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequest
+import androidx.work.WorkManager
 import com.google.firebase.auth.FirebaseAuth
 import com.moneo.moneo.databinding.ActivityReminderBinding
-import com.moneo.moneo.ui.factory.PrediksiFactory
-import kotlinx.coroutines.launch
+import com.moneo.moneo.datastore.SettingPreferences
+import com.moneo.moneo.ui.factory.SettingFactory
+import java.util.concurrent.TimeUnit
 
-
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "setting")
 @Suppress("DEPRECATION")
 class ReminderActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityReminderBinding
-    private lateinit var reminderVM: ReminderViewModel
     private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var notificationManager: NotificationManagerCompat
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,60 +43,56 @@ class ReminderActivity : AppCompatActivity() {
         firebaseAuth = FirebaseAuth.getInstance()
 
 
-        val reminderManager = ReminderManager(this)
-
-        val reminderFactory: PrediksiFactory  = PrediksiFactory.getInstance(this)
-        reminderVM = ViewModelProvider(this, reminderFactory)[ReminderViewModel::class.java]
+        val pref = SettingPreferences.getInstance(dataStore)
+        val reminderVM = ViewModelProvider(this, SettingFactory(pref))[ReminderViewModel::class.java]
 
 
-        lifecycleScope.launch {
-            reminderVM.isNotificationEnabled.collect{isEnable ->
-                if (isEnable){
-                val idAccount = firebaseAuth.currentUser!!.uid
-                val token = firebaseAuth.currentUser!!.uid
-                 reminderVM.getPrediksi(idAccount, token)
-                }
+        reminderVM.getNotifikasi().observe(this) {enable ->
+            if(enable){
+                binding.switchReminder.isChecked = true
+                Toast.makeText(this, "Notifikasi Aktif", Toast.LENGTH_SHORT).show()
+                notificationWorkManager()
+            } else {
+                binding.switchReminder.isChecked = false
+                Toast.makeText(this, "Notifikasi Tidak Aktif", Toast.LENGTH_SHORT).show()
+
             }
         }
 
-        reminderVM.success.observe(this){prediksiResponse ->
-            val notificationData = prediksiResponse.perbandingan
-            reminderManager.scheduleRandomNotifications(notificationData)
-            Log.e("ReminderActivity", "Success ${prediksiResponse.perbandingan}")
+
+        binding.switchReminder.setOnCheckedChangeListener{_, isChecked ->
+            reminderVM.setNotifikasiEnable(isChecked)
         }
 
-        reminderVM.error.observe(this){errorMessage ->
-            Log.e("ReminderActivity", "Error $errorMessage")
-            Toast.makeText(this, "Error $errorMessage", Toast.LENGTH_SHORT).show()
-        }
-        // Update the switch state based on the notification status
-        reminderVM.isNotificationEnabled.apply {
-            binding.switchReminder.isChecked = true
-        }
-
-        // Update the notification status when the switch is toggled
-        binding.switchReminder.setOnCheckedChangeListener { _, isChecked ->
-            reminderVM.setNotificationEnabled(isChecked)
-        }
-
-//        reminderVM.isNotificationEnabled.apply {
-//            binding.switchReminder.isChecked = reminderVM.isNotificationEnabled.value
-//        }
-//
-//
-//        binding.switchReminder.setOnClickListener { view: View ->
-//            reminderVM.setNotificationEnabled(enabled = true)
-//        }
 
         binding.btnBack.setOnClickListener {
             onBackPressed()
         }
-
-        if (Build.VERSION.SDK_INT > 32) {
-            requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-        }
     }
 
+    @SuppressLint("InvalidPeriodicWorkRequestInterval")
+    private fun notificationWorkManager() {
+        val constraints = Constraints.Builder()
+            .setRequiresCharging(false)
+            .setRequiredNetworkType(NetworkType.NOT_REQUIRED)
+            .setRequiresCharging(false)
+            .setRequiresBatteryNotLow(true)
+            .build()
+
+        val myRequest = PeriodicWorkRequest.Builder(
+            ReminderWorker::class.java,
+            8,
+            TimeUnit.HOURS
+        ).setConstraints(constraints)
+            .build()
+
+        WorkManager.getInstance(this)
+            .enqueueUniquePeriodicWork(
+                "my_id",
+                ExistingPeriodicWorkPolicy.KEEP,
+                myRequest
+            )
+    }
     private val requestPermissionLauncher =
         registerForActivityResult(
             ActivityResultContracts.RequestPermission()

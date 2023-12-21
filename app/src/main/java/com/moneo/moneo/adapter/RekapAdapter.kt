@@ -21,10 +21,14 @@ class RekapAdapter(private var listRekap: List<ListRekapItem>) :
                 tvPengeluaran.text = "Pengeluaran"
                 tvRataPengeluaran.text = "rata-rata perhari"
                 tvSelisih.text = "Selisih"
-                tvTanggal.text = rekap.date
+                tvTotal.text = "Total"
+                tvTanggal.text = rekap.dateRange
                 tvAngkaPengeluaran.text = rekap.totalExpenses
+                tvAngkaRataPengeluaran.text = rekap.averageDailyExpenses
                 tvAngkaPemasukan.text = rekap.totalIncome
+                tvAngkaRataPemasukan.text = rekap.averageDailyIncome
                 tvAngkaSelisih.text = rekap.difference
+                tvAngkaTotal.text = rekap.total.toString()
             }
         }
     }
