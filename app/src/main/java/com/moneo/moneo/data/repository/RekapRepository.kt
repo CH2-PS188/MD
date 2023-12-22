@@ -3,13 +3,10 @@ package com.moneo.moneo.data.repository
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import com.moneo.moneo.data.local.rekap.Rekap
-import com.moneo.moneo.data.local.rekap.RekapDao
 import com.moneo.moneo.data.remote.response.Perbandingan
 import com.moneo.moneo.data.remote.response.PrediksiResponse
 import com.moneo.moneo.data.remote.response.RekapResponse
 import com.moneo.moneo.data.remote.response.Summary
-import com.moneo.moneo.data.remote.response.toRekeningsItem
 import com.moneo.moneo.data.remote.retrofit.ApiModelService
 import com.moneo.moneo.data.result.Result
 import com.moneo.moneo.data.remote.retrofit.ApiService

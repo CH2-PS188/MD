@@ -147,8 +147,12 @@ class AddUpdateTransactionActivity : AppCompatActivity(), DatePickerFragment.Dia
                         } else {
                             this.idAccount = idAccount
                             this.rekening = rekening
-                            val parts = total.split(" ")
-                            this.total = parts[1]
+                            if (total.contains(" ")) {
+                                val parts = total.split(" ")
+                                this.total = parts[1]
+                            } else {
+                                this.total = total
+                            }
                             this.title = title
                             this.category = category
                             this.description = description
