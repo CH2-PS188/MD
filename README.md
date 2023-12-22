@@ -9,7 +9,7 @@ This repository is the Capstone Project in Bangkit Academy 2023 Batch 2. This ap
   ```bash
   git clone https://github.com/CH2-PS188/MD.git
   ```
-2. Open Android Studio and click on "Open an existing Android Studio project". Navigate to the directory where you cloned the repository and select the "EcoSense-Android" folder.
+2. Open Android Studio and click on "Open an existing Android Studio project". Navigate to the directory where you cloned the repository and select the "Moneo" folder.
 3. Wait for the Gradle build to finish. This may take a few minutes.
 4. Connect an Android device to your computer or start an emulator.
 5. In Android Studio, click on the "Run" button (the green triangle) in the toolbar. Select the device you want to run the app on and click "OK".
@@ -19,7 +19,7 @@ If you encounter any errors or issues, you can refer to the "Issues" section of 
 
 # Application Install
 
-***You can Install and test latest Next Hotel app from below 👇***
+***You can Install and test latest Moneo app from below 👇***
 
 [![MONEO](https://img.shields.io/badge/Moneo%E2%9C%85-APK-red.svg?style=for-the-badge&logo=android)](https://drive.google.com/file/d/1moIHLpwPgLpan743xo-F6Pv7h1aGih_F/view?usp=sharing)
 
