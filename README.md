@@ -21,7 +21,7 @@ If you encounter any errors or issues, you can refer to the "Issues" section of 
 
 ***You can Install and test latest Next Hotel app from below 👇***
 
-[![MONEO](https://img.shields.io/badge/Moneo%E2%9C%85-APK-red.svg?style=for-the-badge&logo=android)](https://github.com/CH2-PS188/MD/app-debug.apk)
+[![MONEO](https://img.shields.io/badge/Moneo%E2%9C%85-APK-red.svg?style=for-the-badge&logo=android)](app-debug.apk)
 
 
 ## Getting started
