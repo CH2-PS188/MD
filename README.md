@@ -41,6 +41,15 @@ If you encounter any errors or issues, you can refer to the "Issues" section of 
 | ![](Media/9.AddRekeningScreen.png) | ![](Media/10.EditRekeningScreen.png) | ![](Media/11.RekapScreen.png) | ![](Media/12.SettingsScreen.png) |
 | ![](Media/13.ThemaScreen.png) | ![](Media/14.ReminderScreen.png) | ![](Media/15.LogoutScreen.png) | ![](Media/16.Notifikasiaktif.png) |
 
+## About
+- Login and Registrations
+- Add and Edit Transactions
+- Add and Edit Account
+- Final Report
+- Daily Reminder
+- Light Mode and Dark Mode 🌗
+
+
 ## Architecture
 This app uses [***MVVM (Model View View-Model)***](https://developer.android.com/jetpack/docs/guide#recommended-app-arch) architecture.
 
