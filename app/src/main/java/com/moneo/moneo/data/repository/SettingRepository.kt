@@ -34,8 +34,8 @@ class SettingRepository(
         preferences.saveThemeSetting(isLightTheme)
     }
 
-    suspend fun isNotificationEnabled(): Boolean {
-        return preferences.isNotificationEnabled().first()
+    fun getNotifikasi(): LiveData<Boolean>{
+        return preferences.getNotifikasi().asLiveData()
     }
 
     suspend fun setNotificationEnabled(enabled: Boolean) {

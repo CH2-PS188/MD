@@ -19,35 +19,13 @@ import kotlinx.coroutines.withContext
 
 class ReminderViewModel(private val settingRepository: SettingRepository): ViewModel() {
 
-    private val _success = MutableLiveData<PrediksiResponse>()
-    val success: LiveData<PrediksiResponse> get() = _success
+    fun getNotifikasi(): LiveData<Boolean> {
+        return settingRepository.getNotifikasi()
+    }
 
-    private val _error = MutableLiveData<String>()
-    val error: LiveData<String> get() = _error
-
-
-    private val _isNotificationEnabled = MutableStateFlow(false)
-    val isNotificationEnabled: StateFlow<Boolean>
-        get() = _isNotificationEnabled
-
-
-    init {
+    fun setNotifikasiEnable(enable: Boolean){
         viewModelScope.launch {
-            _isNotificationEnabled.value = settingRepository.isNotificationEnabled()
-        }
-    }
-
-    fun setNotificationEnabled(enabled: Boolean) {
-        viewModelScope.launch (Dispatchers.IO){
-            _isNotificationEnabled.value = enabled
-            settingRepository.setNotificationEnabled(enabled)
-        }
-    }
-
-    fun getPrediksi(token: String, idAccount: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-
-
+            settingRepository.setNotificationEnabled(enable)
         }
     }
 
